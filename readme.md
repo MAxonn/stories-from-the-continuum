@@ -22,7 +22,7 @@ The HTML in each story folder is the easiest way for a story to be read. Simply 
 
 ### 3.2 Use the Story Teller
 
-The full version of the Story Teller provides a more "book" feel to a given story. It loads all the segments of a given story in the order specified by the Table of Contents.
+The full version of the Story Teller is under construction. It will be able to not only show any story in the entire repository, but it will also manage soundtracks for the stories when the user allows it.
 
 NOTE: I'm working on getting the Story Teller available online somehow, but I haven't yet figured how to use GitHub in combination with my own host in order to achieve this.
 
