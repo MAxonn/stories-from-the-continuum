@@ -18,6 +18,7 @@ var _loadStoryCommandsQueued = false;
 function loadStory(baseURL, storyData)
 {
 	_storyData = storyData;
+	//TODO: this might be a bit too many requests for stories with dozens of segments. Implement sequential loading.
   _.each(storyData.toc, function (tocItem)
   {
 	  _segmentsToLoad++;

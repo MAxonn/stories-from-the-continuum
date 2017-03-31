@@ -2,7 +2,9 @@
  * Created by Axonn on 30-Mar-17.
  */
 
-//var tocHeight = 0; //Required so that the iFrame is automatically resized.
+//TODO: generate iFrames programatically and load all story data in a sequential loop
+//TODO: when above is done, create anchors inside div, to facilitate TOC navigation.
+//TODO: write a nicer TOC chapter description based on raw description info.
 
 //Shows story data such as title and table of contents.
 function showStoryData(storyData)
@@ -13,23 +15,16 @@ function showStoryData(storyData)
 		$("#toc")
 				.append("<a href='javascript:loadStorySegment(\"" + value.file + "\");'>" + value.rawDescription + "</a>")
 				.append("<br/>");
-		//TODO: write a nicer description based on raw description info.
-		//TODO: generate iFrames programatically and load all story data.
 	});
-	//var tocContainer = ;
 	$("#toc").append("<br/>");
 	$("#title").append("<h1>" + storyData.title + "</h1>");
-	//tocHeight = tocContainer.outerHeight(true);
 }
 
 //To be called when any link in the TOC is clicked.
 function loadStorySegment(value)
 {
 	tocHeight = $("#toc").outerHeight(true);
-	$("#ifrLoader")
-			.attr('src', value);
-			//.css('display','')
-			//.height( $(window).height() - tocHeight);
+	$("#ifrLoader").attr('src', value);
 }
 
 function contentLoaded (iFrame)
@@ -38,11 +33,3 @@ function contentLoaded (iFrame)
 	$("#content").empty();
 	buildStoryHTML("content", storySegment.split('\n'));
 }
-
-//Resize of iFrame based on TOC height.
-/*
-$(window).resize(function()
-{
-	$('#content').height( $(window).height() - tocHeight);
-}).resize();
-*/

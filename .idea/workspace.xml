@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="98e3aed0-ed88-4de8-9105-d243d105e53b" name="Default" comment="" />
+    <list default="true" id="98e3aed0-ed88-4de8-9105-d243d105e53b" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/short-stories/02017-001-stories-from-the-continuum/01-a-source-of-creation/a-source-of-creation.sttoc.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/short-stories/02017-001-stories-from-the-continuum/02-jonas-is-flying/jonas-is-flying.sttoc.html" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/readme.md" afterPath="$PROJECT_DIR$/readme.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/storyteller/story-loader/multi-segment-loader.js" afterPath="$PROJECT_DIR$/storyteller/story-loader/multi-segment-loader.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/storyteller/story-loader/stand-alone.js" afterPath="$PROJECT_DIR$/storyteller/story-loader/stand-alone.js" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,18 +21,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="a-source-of-creation.sttoc.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/short-stories/02017-001-stories-from-the-continuum/01-a-source-of-creation/data/a-source-of-creation.sttoc.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="78">
-              <caret line="3" column="63" lean-forward="false" selection-start-line="3" selection-start-column="63" selection-end-line="3" selection-end-column="63" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -56,17 +51,17 @@
         <option value="$PROJECT_DIR$/storyteller/render/stand-alone.js" />
         <option value="$PROJECT_DIR$/storyteller/story-loader/render.js" />
         <option value="$PROJECT_DIR$/short-stories/02017-001-stories-from-the-continuum/01-a-source-of-creation/a-source-of-creation.sttoc.html" />
-        <option value="$PROJECT_DIR$/storyteller/story-loader/stand-alone.js" />
         <option value="$PROJECT_DIR$/present.html" />
         <option value="$PROJECT_DIR$/short-stories/02017-001-stories-from-the-continuum/02-jonas-is-flying/data/01.st.txt" />
         <option value="$PROJECT_DIR$/short-stories/02017-001-stories-from-the-continuum/02-jonas-is-flying/data/02.st.txt" />
         <option value="$PROJECT_DIR$/short-stories/02017-001-stories-from-the-continuum/01-a-source-of-creation/data/load.js" />
         <option value="$PROJECT_DIR$/short-stories/02017-001-stories-from-the-continuum/02-jonas-is-flying/jonas-is-flying.sttoc.html" />
-        <option value="$PROJECT_DIR$/storyteller/story-loader/multi-segment-loader.js" />
         <option value="$PROJECT_DIR$/storyteller/config/present.js" />
         <option value="$PROJECT_DIR$/short-stories/02017-001-stories-from-the-continuum/02-jonas-is-flying/data/jonas-is-flying.sttoc.js" />
         <option value="$PROJECT_DIR$/storyteller/config/st.js" />
         <option value="$PROJECT_DIR$/short-stories/02017-001-stories-from-the-continuum/01-a-source-of-creation/data/a-source-of-creation.sttoc.js" />
+        <option value="$PROJECT_DIR$/storyteller/story-loader/stand-alone.js" />
+        <option value="$PROJECT_DIR$/storyteller/story-loader/multi-segment-loader.js" />
       </list>
     </option>
   </component>
@@ -489,12 +484,12 @@
       <workItem from="1490821276407" duration="7917000" />
       <workItem from="1490837646412" duration="1707000" />
       <workItem from="1490916330599" duration="6065000" />
-      <workItem from="1490925014433" duration="559000" />
+      <workItem from="1490925014433" duration="1527000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16376000" />
+    <option name="totallyTimeSpent" value="17344000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -507,11 +502,11 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22654584" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22654584" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32986766" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -547,7 +542,7 @@
         <state relative-caret-position="70">
           <caret line="5" column="4" lean-forward="false" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -588,7 +583,7 @@
         <state relative-caret-position="70">
           <caret line="5" column="4" lean-forward="false" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -629,7 +624,7 @@
         <state relative-caret-position="85">
           <caret line="5" column="4" lean-forward="false" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -663,7 +658,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -776,13 +771,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/storyteller/story-loader/stand-alone.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="20" column="57" lean-forward="false" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/short-stories/02017-001-stories-from-the-continuum/02-jonas-is-flying/data/02.st.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="26">
@@ -826,16 +814,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/short-stories/02017-001-stories-from-the-continuum/01-a-source-of-creation/data/load.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="6" column="49" lean-forward="false" selection-start-line="6" selection-start-column="49" selection-end-line="6" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#41#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/storyteller/config/st.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="130">
@@ -849,16 +827,8 @@
         <state relative-caret-position="469">
           <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/storyteller/story-loader/multi-segment-loader.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="21" column="3" lean-forward="false" selection-start-line="21" selection-start-column="3" selection-end-line="21" selection-end-column="3" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -870,11 +840,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/storyteller/story-loader/multi-segment-loader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="9" column="2" lean-forward="true" selection-start-line="9" selection-start-column="2" selection-end-line="9" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/short-stories/02017-001-stories-from-the-continuum/01-a-source-of-creation/data/load.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="6" column="49" lean-forward="false" selection-start-line="6" selection-start-column="49" selection-end-line="6" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#41#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/short-stories/02017-001-stories-from-the-continuum/01-a-source-of-creation/data/a-source-of-creation.sttoc.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="78">
           <caret line="3" column="63" lean-forward="false" selection-start-line="3" selection-start-column="63" selection-end-line="3" selection-end-column="63" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/storyteller/story-loader/stand-alone.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="20" column="1" lean-forward="true" selection-start-line="20" selection-start-column="1" selection-end-line="20" selection-end-column="1" />
+          <folding>
+            <element signature="n#!!doc;n#showStoryData#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -8,9 +8,9 @@ Stories from the Continuum is a perpetually changing creature of thought. There 
 
 In order to facilitate contribution, there is a system in place that allows all texts to be split into arbitrary modules (not necesarily chapters). In the same time, it is important that the texts are  easily readble or compilable into different formats. The name of this sytem is **Story Teller**.
 
-The stories are usually split into segments. These segments are files that are located inside the '/data' folder of each story and have the .stseg.txt extension (Story Teller Segment). Naturally, thanks to GIT, all segments will have their own separate history.
+The stories are usually split into segments. These segments are files that are located inside the '/data' folder of each story and have the .stseg extension (Story Teller Segment). Naturally, thanks to GIT, all segments will have their own separate history. Feel free to associate the .stseg extension with your favorite text editor, as these are nothing more but Unicode text files.
 
-Each story has a .sttoc.html (Story Teller Table of Contents) file that lists the Story Teller Segments that make up the story. When the Story Teller reads the Table of Contents, it loads all segments and produces an easily readable HTML.
+Each story has an HTML file in its folder. The file will list all the segments in the story. Information about the segments is found in the '/data' folder, inside a JavaScript file named like the story plus a .sttoc suffix (Story Teller Table of Contents). The file describes the Story Teller Segments that make up the story as well as some other story metadata. When the Story Teller reads the Table of Contents, it loads all segments and produces an easily readable HTML.
 
 # 3. How to Read
 
@@ -18,7 +18,7 @@ First of all, clone the repo.
 
 ### 3.1 Read the stories segment by segment
 
-The Table of Contents of each story (the .sttoc.html file located in each story folder) is the easiest way for a story to be read. Simply open the HTML file and load the different segments listed in the Table of Contents. This file is the "stand-alone light-weight" version of the Story Teller.
+The HTML in each story folder is the easiest way for a story to be read. Simply open the HTML file and load the different segments listed in the Table of Contents. This file is the "stand-alone light-weight" version of the Story Teller.
 
 ### 3.2 Use the Story Teller
 
