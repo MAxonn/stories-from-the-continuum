@@ -1,15 +1,22 @@
 <html>
 <head>
   <meta charset="UTF-8"/>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+
+	<link rel='stylesheet' href='storyteller/style.css' type='text/css' media='all' />
+
   <script src="storyteller/libs/jquery-3.2.0.js" defer></script>
   <script src="storyteller/libs/lodash.js" defer></script>
   <script src="storyteller/config/st.js" defer></script>
-	<script src="storyteller/config/present.js" defer></script>
+	<script src="storyteller/story-loader/loader-multi-story.js" defer></script>
 	<script src="storyteller/story-loader/render.js" defer></script>
   <script src="storyteller/story-loader/multi-segment-loader.js" defer></script>
-  <script src="storyteller/story-loader/multi-story-loader.js" defer></script>
+	<script src="storyteller/present.js" defer></script>
 </head>
 <body>
+	<div id="mainTitle">
+		<h1>Stories from the Continuum</h1>
+	</div>
   <div id="stories"></div>
 	<div id="title"></div>
   <div id="story"></div>

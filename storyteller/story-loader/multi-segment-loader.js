@@ -1,8 +1,11 @@
 /**
  * Created by Michael Axonn on 2017-03-28.
+ *
+ * Loads all the segments of a story.
+ * The entry point of this script is the loadStory function.
+ *
+ * REQUIRES: _storyDatas from loader-multi-story.js
  */
-
-//USES: _storyDatas from config/st.js
 
 //Total number of segments to load. Used to make sure we wait for all requests to complete
 //before showing the story.
@@ -13,6 +16,7 @@ var _segmentsData = [];
 var _storyData;
 //Signals that all commands to load story data were queued.
 var _loadStoryCommandsQueued = false;
+
 
 
 //Loads all segments of a story using a base URL where they are located.
@@ -53,7 +57,7 @@ function showStory ()
 {
 	//Clear existing content.
 	$("#story").empty();
-	$("#title").empty().append("<h1>" + _storyData.title + "</h1>");
+	$("#title").empty().append("<h3>" + _storyData.title + "</h3>");
 	//Render all segments.
 	_.each(_segmentsData, function(value)
 	{

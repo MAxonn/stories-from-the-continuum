@@ -1,45 +1,75 @@
-# 1. Open Source Literature
+# 1. Why Open Source Literature?
 
-As the name says, this repository contains stories from the Continuum. The purpose of having this in GIT is so that anybody can easily contribute to the texts or submit corrections. The intent is to create a living, evolving body of work. We are long past the time when a published text is forever locked into a certain shape.
+The purpose of Open Source Literature is for anybody to easily contribute to a certain text or to submit corrections to it using a public platform that features **branching** and **versioning**. Especially branching is important, because it offers the possibility of exploding a work into a myriad variants.
 
-Stories from the Continuum is a perpetually changing creature of thought. There won't be any "final version" for any text. Instead, this art embraces the software definition of a "release". There will be releases, but the work is always subject to change.
+The intent of Open Source Literature is to create a living, evolving body of work. We are long past the time when a published text is forever locked into a certain shape.
 
-# 2. Structure
+It's true that a work of literature is much less modular than a software program. Changes can have much more serious repercussions upon the overall result, especially because the result is an imaginary projection. But Open Source is all about opening the door to experimentation and it is that spirit which brought these words here.
 
-In order to facilitate contribution, there is a system in place that allows all texts to be split into arbitrary modules (not necesarily chapters). In the same time, it is important that the texts are  easily readble or compilable into different formats. The name of this sytem is **Story Teller**.
+# 2. Stories from the Continuum
 
-The stories are usually split into segments. These segments are files that are located inside the '/data' folder of each story and have the .stseg extension (Story Teller Segment). Naturally, thanks to GIT, all segments will have their own separate history. Feel free to associate the .stseg extension with your favorite text editor, as these are nothing more but Unicode text files.
+Stories from the Continuum is a perpetually changing creature of thought. There won't be any "final version" for any text. Instead, this project embraces the software definition of a "release". There will be releases (especially when I publish a story), but the work is always subject to change.
 
-Each story has an HTML file in its folder. The file will list all the segments in the story. Information about the segments is found in the '/data' folder, inside a JavaScript file named like the story plus a .sttoc suffix (Story Teller Table of Contents). The file describes the Story Teller Segments that make up the story as well as some other story metadata. When the Story Teller reads the Table of Contents, it loads all segments and produces an easily readable HTML.
+Because the balance of a story is a delicate affair, even though this repository is public, as the author of these stories, I will maintain a rather strict control over what it contains. However, since this is on GitHub, anybody can fork the repository and create completely independent stories should the desire ever arise.
 
-# 3. How to Read
+This is also an experiment of how Open Source Literature could work and what would be a good way for it to be implemented by other authors.
 
-First of all, clone the repo.
+Stories from the Continuum is well suited for Open Source because it consists of a very large and diverse Universe. As it will soon be apparent, there will be a lot of room for contribution here.
 
-### 3.1 Read the stories segment by segment
+# 3. Too Technical for Literature?
 
-The HTML in each story folder is the easiest way for a story to be read. Simply open the HTML file and load the different segments listed in the Table of Contents. This file is the "stand-alone light-weight" version of the Story Teller.
+A question like this may inevitably arise at one point: some writers aren't technical people, how will they use a version control system? I think most writers today use a computer. Using a version control system is as easy as installing a word processor. Cloning a repository is as easy as downloading a program. Perhaps there are a few more commands involved, but they are well documented and I believe, easy enough to understand by somebody that is writing literature.
 
-### 3.2 Use the Story Teller
+A similar question is: **why** would a writer work with a version control system? I believe many writers already do that in one way or another. A full-fledged version control system such as GIT allows **me** as a writer to keep my experiments in branches, to version them, to freely toy around with all my creation **without** having to delete anything. There is also an advantage in being able to visualize all these. There is a lot of software for exploring and viewing the branches and history of versioned repositories.
 
-The full version of the Story Teller is under construction. It will be able to not only show any story in the entire repository, but it will also manage soundtracks for the stories when the user allows it.
+I don't think version control is too technical. It **is** technical, yes, but the benefits are great and the learning curve isn't that steep. Some reading on what version control is might be required by some, but it's worth it.
+
+Why GitHub? Because it's clean, reliable, well-known, well-supported and because GIT is one of the best version control systems.
+
+# 4. Structure
+
+In order to facilitate contribution, there is a system in place that allows all texts to be split into arbitrary segments (not necesarily chapters). In the same time, it is important that the texts are easily readble or compilable into different formats. Everything is based on open standards. The stories are written in plain Unicode text files and can be read using the provided HTML files. The work-in-progress name of the system is **Story Teller**.
+
+The stories are usually split into segments. These segments are files that are located inside the `'/data'` folder of each story and have the .stseg extension (Story Teller Segment). Naturally, thanks to GIT, all segments will have their own separate history. Feel free to associate the .stseg extension with your favorite text editor, as these are nothing more but plain text files using the Unicode standard.
+
+Each story has an HTML file in its folder. The file will list all the segments in the story. Information about the segments is found in the `'/data'` folder, inside a JavaScript file with the same name as the story and suffixed with .stdata  (Story Teller Data). The file describes the segments that make up the story as well as some other story metadata.
+
+There are also HTML files that offer access to multiple stories.
+
+The `'storyteller'` folder contains the JavaScripts that handle loading story data, segments and displaying the stories in a unitary way (not segmented).
+
+The `'.idea'` folder as well as the `stories-from-the-continuum.iml` file in the repository are there because I use IntelliJ to work on the Story Teller.
+
+# 5. Just Read
+
+First of all, clone this repository or download a zip containing it. For the less technical: cloning the repo requires you to install GIT but provides you with a proper connection to the repository, meaning you can easily update to the latest version or do experiments with it.
+
+The stories are split into segments that are available inside each story's `'/data'` folder. Even though they have the `.stseg` extension, these segments are plain text files that can be opened by any program that can interpret text.
+
+It is, however, rather cumbersome to read a story in this way. This is why I built the **Story Teller**. The Story Teller comes in the form of HTML files that you can open in your web browser in order to easily read any story. For the time being, however, there are some security workarounds that you might have to perform (unless you use Firefox which works fine even with this early version of the Story Teller).
+
+NOTE: I'm working on a way to generate static HTML files based on the segments, so that the stories are even easier to read.
 
 NOTE: I'm working on getting the Story Teller available online somehow, but I haven't yet figured how to use GitHub in combination with my own host in order to achieve this.
 
-The Story Teller itself can be launched by opening the **continuum.html** file (all work), or the **present.html** (stories in-development) file. However, due to security sandboxing in most browsers, there are various workarounds that you may have to do in order to get the Story Teller working on your machine.
+#### 3.2.1 Read using static HTML files
 
-#### 3.2.1 Use local files (requires working around security issues)
+This feature is under construction.
+
+#### 3.2.2 Read using the browser and the fresh local copy of the repository (may require working around security issues)
 
 * Firefox: at the time of this writing (29th of March 2017), the latest version of Firefox **can** browse through the content with only a few complaints (visible only if you look in the developer console and that do not affect functionality).
-* Chrome & Opera (both based on Chromium) will refuse to load the story segment (.stseg.txt) files unless you start the browser with this command line argument: --allow-file-access-from-files
+* Chrome & Opera (both based on Chromium) will **refuse** to load any story segment (.stseg) file **unless you start the browser with this command line argument**: --allow-file-access-from-files
   * On Windows:
     chrome.exe --allow-file-access-from-files
+		or
+		opera.exe --allow-file-access-from-files
   * On Mac:
     open /Applications/Google\ Chrome.app/ --args --allow-file-access-from-files
 
-#### 3.2.2 Use local files with a light-weight web server
+#### 3.2.3 Serve your own files using a light-weight web server
 
-The cleanest way to use the Story Teller locally is to install a light-weight web server.
+For now, the cleanest way to use the Story Teller locally is to install a light-weight web server.
 
 I recommend nginx @ http://nginx.org/en/download.html
 
@@ -54,24 +84,25 @@ index  index.html index.htm;
 
 As you can see, I am serving the entire GIT repo for Stories from the Continuum. You can serve a parent folder if you'd like or if you already have a web server you can simply clone this repo somewhere in your static content.
 
-#### 3.2.3 Use remote files
+#### 3.2.4 Use remote files
 
 Open **/storyteller/config/st.js**
 
-Change KST_REMOTE_URL to "http://michaelaxonn.com/st".
+Change KST_REMOTE_URL to "http://michaelaxonn.com/st" (the line should already be there, uncomment it).
 
-This will make the Story Teller attempt to load all files from the web-based mirror I'm currently running on my official website.
+This will make the Story Teller attempt to load all files from the web-based mirror I'm currently running on my official website. This may or may not be available for you. It is also possibly a bit behind compared to the repo as I haven't made any steps towards mirroring repo files towards my website.
 
 # How to Contribute
 
-Make a pull request, let's talk about it.
+Contributions are always welcome and will be treated fairly. Make a pull request and perhaps we'll talk about it.
 
 # Suggested Software
 
-I'm stuck on Windows due to legacy reasons so all the software I'll recommend is Windows based.
+I'm stuck on Windows due to software reasons so all the programs I'll recommend are Windows based.
 
-I fell in love with WriteMonkey, a wonderful zenware text editor.
+To use the repository: TortoiseGit is a user-friendly GIT front-end.
+To write: I fell in love with WriteMonkey, a wonderful zenware text editor.
 
 # About Michael Axonn
 
-I'm the curator of this repository and the author that has published the first stories.
+I'm the author that has published the first stories in this repository. For the time being, I'm the sole curator of Stories from the Continuum. However, for me, this project is more than an author's imaginary Universe. Only time will tell what this will evolve into. The history of this readme.md file will be fun to watch.
