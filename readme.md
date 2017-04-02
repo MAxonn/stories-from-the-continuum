@@ -40,7 +40,17 @@ The `'storyteller'` folder contains the JavaScripts that handle loading story da
 
 The `'.idea'` folder as well as the `stories-from-the-continuum.iml` file in the repository are there because I use IntelliJ to work on the Story Teller.
 
-# 5. Just Read
+#### 4.1 Internal Document Tracking (AKA Cross-Commit Change Tracking)
+
+A common feature of advanced text processors is to keep track of changes in a document or to leave comments in a document. This feature is quite important to me when I'm editing drafts. Binary formats are not good friends with versioning control, but fortunately at least one decent text processors can perform all this work in an open format. (perhaps) Unfortunately, that program is Microsoft Word, not exactly cheap software.
+
+Since I have no time now to investigate LibreOffice capabilities (also considering I had poor experience running it under Windows), for now I've only integrated the use of Microsoft Word into this Open Source Literature workflow. By integration I mean that there are some macros and a template provided that can be used to easily transfer work to and from story segments.
+
+Since this document tracking feature is disconnected from the Story Teller, the files pertaining to tracking for a story should be located in the story's `'/data/tracked'` folder. This disconnection should be seen as an advantage, since it doesn't pollute the simplicity of text files while in the same time allowing users to work in formats that are widely accepted by publishers. Word `HTML` files for example can easily be saved back to `Doc` or `DocX`.
+
+Why use document tracking if GIT already provides this from commit to commit? Because it's nice to have immediate visual feedback of changes done while editing a draft and return to them later, without necessarily losing them after a commit has been made. By decoupling document tracking from the actual committed story segments, there are practically two complementary versioning systems available.
+
+# 5. How to Read
 
 First of all, clone this repository or download a zip containing it. For the less technical, downloading the zip should be enough. Cloning the repo requires you to install GIT but provides you with a connection to the repository, meaning you can easily update to the latest version and perform all the wonderful stuff a verision control system allows you to.
 
@@ -106,3 +116,5 @@ To write: I fell in love with WriteMonkey, a wonderful zenware text editor.
 # About Michael Axonn
 
 I'm the author that has published the first stories in this repository. For the time being, I'm the sole curator of Stories from the Continuum. However, for me, this project is more than an author's imaginary Universe. Only time will tell what this will evolve into. The history of this readme.md file will be fun to watch.
+
+And yes, I'm a software developer as well. But the writer in me is the one who wrote this readme :).
