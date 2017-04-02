@@ -42,15 +42,15 @@ The `'.idea'` folder as well as the `stories-from-the-continuum.iml` file in the
 
 # 5. Just Read
 
-First of all, clone this repository or download a zip containing it. For the less technical: cloning the repo requires you to install GIT but provides you with a proper connection to the repository, meaning you can easily update to the latest version or do experiments with it.
+First of all, clone this repository or download a zip containing it. For the less technical, downloading the zip should be enough. Cloning the repo requires you to install GIT but provides you with a connection to the repository, meaning you can easily update to the latest version and perform all the wonderful stuff a verision control system allows you to.
 
-The stories are split into segments that are available inside each story's `'/data'` folder. Even though they have the `.stseg` extension, these segments are plain text files that can be opened by any program that can interpret text.
+Secondly, you need absolutely nothing more than a computer to read any of the stories here. The stories are split into segments that are available inside each story's `'/data'` folder. Even though they have the `.stseg` extension (chosen so that you can associate a particular text editor with them), these segments are plain text files that can be opened by any program that can interpret text (and all operating systems have at least one such program).
 
-It is, however, rather cumbersome to read a story in this way. This is why I built the **Story Teller**. The Story Teller comes in the form of HTML files that you can open in your web browser in order to easily read any story. For the time being, however, there are some security workarounds that you might have to perform (unless you use Firefox which works fine even with this early version of the Story Teller).
+It is, however, rather cumbersome to read a story in this way (because sometimes the segments can be quite small). This is why I built the **Story Teller**. The Story Teller comes in the form of HTML files that you can open in your web browser in order to easily read any story. For the time being, however, there are some security workarounds that you might have to perform (unless you use Firefox which works fine even with this early version of the Story Teller).
 
-NOTE: I'm working on a way to generate static HTML files based on the segments, so that the stories are even easier to read.
+**IMPORTANT**: I'm working on a way to generate static HTML files based on the segments, so that the stories are even easier to read.
 
-NOTE: I'm working on getting the Story Teller available online somehow, but I haven't yet figured how to use GitHub in combination with my own host in order to achieve this.
+NOTE: I'm working on getting the Story Teller available online somehow, but I haven't yet figured how to use GitHub in combination with my own hosting provider in order to achieve this.
 
 #### 3.2.1 Read using static HTML files
 
