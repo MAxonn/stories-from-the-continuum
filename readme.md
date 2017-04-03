@@ -62,11 +62,11 @@ It is, however, rather cumbersome to read a story in this way (because sometimes
 
 NOTE: I'm working on getting the Story Teller available online somehow, but I haven't yet figured how to use GitHub in combination with my own hosting provider in order to achieve this.
 
-#### 3.2.1 Read using static HTML files
+### 3.2.1 Read using static HTML files
 
 This feature is under construction.
 
-#### 3.2.2 Read using the browser and the fresh local copy of the repository (may require working around security issues)
+### 3.2.2 Read using the browser and the fresh local copy of the repository (may require working around security issues)
 
 * Firefox: at the time of this writing (29th of March 2017), the latest version of Firefox **can** browse through the content with only a few complaints (visible only if you look in the developer console and that do not affect functionality).
 * Chrome & Opera (both based on Chromium) will **refuse** to load any story segment (.stseg) file **unless you start the browser with this command line argument**: --allow-file-access-from-files
@@ -77,13 +77,13 @@ This feature is under construction.
   * On Mac:
     open /Applications/Google\ Chrome.app/ --args --allow-file-access-from-files
 
-#### 3.2.3 Serve your own files using a light-weight web server
+### 3.2.3 Serve your own files using a light-weight web server
 
 For now, the cleanest way to use the Story Teller locally is to install a light-weight web server.
 
 I recommend nginx @ http://nginx.org/en/download.html
 
-###### Instructions for using Story Teller with nginx
+##### Instructions for using Story Teller with nginx
 
 After installing nginx, go into **nginx.conf**, go to the server block, into the location / block and set up the root. Here's, for example, my server block for running Story Teller locally on a Windows machine:
 
@@ -94,7 +94,7 @@ index  index.html index.htm;
 
 As you can see, I am serving the entire GIT repo for Stories from the Continuum. You can serve a parent folder if you'd like or if you already have a web server you can simply clone this repo somewhere in your static content.
 
-#### 3.2.4 Use remote files
+### 3.2.4 Use remote files
 
 Open **/storyteller/config/st.js**
 
@@ -111,6 +111,7 @@ Contributions are always welcome and will be treated fairly. Make a pull request
 I'm stuck on Windows due to software reasons so all the programs I'll recommend are Windows based.
 
 To use the repository: TortoiseGit is a user-friendly GIT front-end.
+
 To write: I fell in love with WriteMonkey, a wonderful zenware text editor.
 
 # About Michael Axonn

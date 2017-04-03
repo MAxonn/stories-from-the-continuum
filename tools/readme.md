@@ -4,8 +4,8 @@ This folder contains various tools useful in the process of writing or managing 
 
 Summary of tools:
 
-* 1. Microsoft Word Macros
-* 2. Microsoft Word Tracking HTML Template
+1. Microsoft Word Macros
+2. Microsoft Word Tracking HTML Template
 
 # 1. Microsoft Word Macros
 
