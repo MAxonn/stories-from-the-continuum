@@ -23,7 +23,7 @@ ImportStorySegment Imports the chosen story segment into this file. This is usua
 
 ### 1.1 Known issues
 
-If there are comments in a Word HTML document, these **will leave traces** in the exported Story Segment. The comment ID is exported between square brakets (i.e. [A1]). I will hopefully soon modify the macro to clean those up.
+If there are comments in a Word HTML document, these will actually be exported along with the text. I'll probably modify the export macro soon so that it is stripping comments away before export and adding them back after the export.
 
 # 2. Microsoft Word Tracking HTML Template
 
