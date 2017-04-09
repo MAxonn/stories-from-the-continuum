@@ -21,10 +21,6 @@ ExportStorySegment exports the contents of a document as a text file, into the p
 
 ImportStorySegment Imports the chosen story segment into this file. This is usually done when the template.html is opened. The macro will show the Open File dialog for the parent folder of the current folder because that's where the story segments are usually located. This will also automatically rename the template with the same name as the opened story segment (but using the `.htm` extension).
 
-### 1.1 Known issues
-
-If there are comments in a Word HTML document, these will actually be exported along with the text. I'll probably modify the export macro soon so that it is stripping comments away before export and adding them back after the export.
-
 # 2. Microsoft Word Tracking HTML Template
 
 When there is a need to track changes while editing a segment, use the above macros in order to work with story segments and Microsoft Word. The template is to be placed inside a `'/tracked'` folder inside the `'/data'` folder of any story. If the folder doesn't already exist, create it.
