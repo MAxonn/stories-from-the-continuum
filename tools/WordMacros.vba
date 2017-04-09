@@ -2,7 +2,6 @@
 'that's where the segments are usually located.
 'The exported data is a snapshot of the text in the document, stripped of all formatting and with
 'all changes accepted (even if the changes weren't accepted yet).
-'Comments will be stripped away before export but will remain in the Word file.
 Sub ExportStorySegment()
 '
 ' ExportStorySegment Macro
@@ -27,7 +26,7 @@ Sub ExportStorySegment()
     
     'Save this document and only after that delete all comments as we don't want these exported.
     ActiveDocument.Save
-    ActiveDocument.DeleteAllComments
+    If ActiveDocument.comments.Count > 0 Then ActiveDocument.DeleteAllComments
     'Now save as it as the exported segment, and then close the saved as so that we can to return to the old document.
     ActiveDocument.SaveAs2 FileName:=newFileName, FileFormat:=wdFormatText, _
                            LockComments:=False, Password:="", AddToRecentFiles:=False, WritePassword _
@@ -47,7 +46,10 @@ Sub ExportStorySegment()
     For i = ActiveDocument.Bookmarks.Count To 1 Step -1
       If ActiveDocument.Bookmarks(i).name = "OSLTMPRESTORECURSOR" Then ActiveDocument.Bookmarks(i).Delete
     Next
-     
+    
+    'Saving the removed bookmark, so that the document doesn't prompt for save. No changes have been made anyway.
+    ActiveDocument.Save
+    
 End Sub
 
 'Imports the chosen story segment into this file. This is usually done when the template.html is opened.
