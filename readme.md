@@ -1,8 +1,8 @@
 # 1. Introduction
 
-If you're here just for the literature aspect of the project (you just want to read), then skip to **number 4** below.
+If you're here just for the literature aspect of the project (**you just want to read the stories**), then skip to **number 4** below.
 
-Otherwise, welcome to a ReadMe.md file written by a Dual Class (Writer / Software Engineer).
+Otherwise, welcome to a ReadMe.md file written by a Dual Class (Writer / Software Engineer) character.
 
 # 2. Why Open Source Literature?
 
@@ -10,7 +10,7 @@ The purpose of Open Source Literature is for anybody to easily contribute to a c
 
 The intent of Open Source Literature is to create a living, evolving body of work. We are long past the time when a published text should forever be locked into a certain shape.
 
-It's true that a work of literature is much less modular than a software program. Changes can have much more serious repercussions upon the overall result, especially because the result is an imaginary projection. But Open Source is all about opening the door to experimentation. It is that spirit which brought these words here.
+It's true that a work of literature is much less modular than a software program. Changes can have much more serious repercussions upon the overall result, especially because a text leads to the creation of an imaginary projection. But Open Source is all about unlocking the potential of experimentation. It is that spirit which brought these words here.
 
 # 3. Stories from the Continuum
 
