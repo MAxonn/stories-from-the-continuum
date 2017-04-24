@@ -1,0 +1,32 @@
+Open Source Literature License
+Version 0.1 [pre-draft] @ 2017-04-24
+
+1. License Propagation
+
+Any literary Work (from now on referred to as "Work") that borrows from this repository MUST propagate this license and is bound by it. If the Work is printed, the license MUST be printed in its latest version BEFORE the actual text of the Work.
+
+This license is attached to a given Work by including it in all relevant locations where the Work's data is stored.
+
+2. Introduction
+
+The purpose of this license is to guarantee that authors that work with Open Source Literature are properly credited and rewarded for their work.
+
+Open Source Literature does **NOT** prevent authors from making profit for their Works. On the contrary, authors are encouraged to self-publish or to give their work to publishers. Some publishers might even request exclusive rights. In that case, the Work can be take a break from existing in the public domain before returning to the Open Source format (things like this can be agreed with between author and publisher).
+
+It is HIGHLY recommended that authors keep copyright for their work.
+
+3. Author Credits
+
+Any Work that borrows from this repository MUST maintain and propagate the history.txt file which shows the list of authors that contributed to the Work.
+
+If the Work is printed, the entire content of the history.txt MUST be printed BEFORE the literary text. If the history.txt is longer than 5000 words, it may be shortened to a list of authors. If it is still longer than 5000 words, it MUST list the first 5000 words and then it must link to at least TWO online versions of the file, one of which must be stored in a future-proof location such as the Registry of Works of the Open Source Literature Foundation's located at https://github.com/MAxonn/oslf/tree/master/registry
+
+4. Profit Sharing
+
+If a work is published **FOR PROFIT**, then the following profit sharing conditions apply:
+
+	- The profit is to be split to contributing authors based on the **percentage of characters they authored inside the Work**.
+	- Profit sharing is to be done in a manner that is "logistically-sane", as in: **the costs involved in sharing the profit should not exceed more than 10% of the profit itself**. For example if the profit is $5 per year for a certain author, then it makes little sense to pay transfer fees for that amount. This can be discussed between publisher and author, based on the profit sharing scheme. For example if an automated way of profit sharing is implemented using BitCoin or other electronic currency with zero transfer fees, then perhaps it would make sense to profit share even minuscule monthly amounts.
+	- Yearly profit sharing is **mandatory** if exceeding $100 per year.
+	- Monthly profit sharing is **mandatory** if exceeding $300 per month.
+	- If for a period of 12 months NONE of the authors of the Work meet the criteria for mandatory profit sharing or the "logistically-sane" conditions, then the profits are to be donated to a **child education charity** that is to be chosen by the author(s) that have made the greatest contribution to the Work.
