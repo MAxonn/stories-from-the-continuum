@@ -160,7 +160,7 @@ Sub ExportStorySegmentNew()
               test2 = bolds(i)
               Dim firstPartOfString As String
               firstPartOfString = Mid(processedLine, 1, locations(i) - 1)
-              processedLine = firstPartOfString + Replace(processedLine, Trim(aBold), "<strong>" + Trim(aBold) + "<strong>", locations(i), 1)
+              processedLine = firstPartOfString + Replace(processedLine, Trim(aBold), "**" + Trim(aBold) + "**", locations(i), 1)
               i = i + 1
             Next
         End If
