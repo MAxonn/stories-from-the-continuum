@@ -113,6 +113,7 @@ Sub ExportStorySegmentNew()
     
     'Prepare new file.
     Dim objStreamUTF8: Set objStreamUTF8 = CreateObject("ADODB.Stream")
+    
     objStreamUTF8.Charset = "UTF-8"
     objStreamUTF8.Mode = adSaveCreateOverWrite
     objStreamUTF8.Open
@@ -159,7 +160,7 @@ Sub ExportStorySegmentNew()
               test2 = bolds(i)
               Dim firstPartOfString As String
               firstPartOfString = Mid(processedLine, 1, locations(i) - 1)
-              processedLine = firstPartOfString + Replace(processedLine, Trim(aBold), "**" + Trim(aBold) + "**", locations(i), 1)
+              processedLine = firstPartOfString + Replace(processedLine, Trim(aBold), "<strong>" + Trim(aBold) + "<strong>", locations(i), 1)
               i = i + 1
             Next
         End If
@@ -186,6 +187,8 @@ Sub ExportStorySegmentNew()
     For i = ActiveDocument.Bookmarks.Count To 1 Step -1
       If ActiveDocument.Bookmarks(i).Name = "OSLTMPRESTORECURSOR" Then ActiveDocument.Bookmarks(i).Delete
     Next
+    'So it doesn't annoy us with save prompts.
+    ActiveDocument.Save
 
 End Sub
 
