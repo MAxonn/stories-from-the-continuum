@@ -83,6 +83,9 @@ Sub ExportStorySegmentNew()
 '
 '
 
+    '@@@@@@@@@@@@@@@@@@@@@@@@@@
+    'Setup.
+    
     Dim oldFile As String
     oldFile = ActiveDocument.Path + "\" + ActiveDocument.Name
     
@@ -93,14 +96,13 @@ Sub ExportStorySegmentNew()
     newPath = Mid(ActiveDocument.Path, 1, InStrRev(ActiveDocument.Path, "\") - 1)
     
     Dim newFileName As String
-    newFileName = newPath + "\" + documentNameWithoutExtension + ".stseg2"
+    newFileName = newPath + "\" + documentNameWithoutExtension + ".stseg"
     
     'Used to return to previous location after exporting the text.
     ActiveDocument.Bookmarks.Add "OSLTMPRESTORECURSOR"
-
-    Application.ScreenUpdating = False
     
-    'Save this document and only after that delete all comments as we don't want these exported.
+    'Save this document and only after that delete all comments & accept revisions.
+    'We don't actually want to tamper with those, we only want the document to be "clean" before saving.
     ActiveDocument.Save
     'Stripping away comments & accepting all revisions.
     If ActiveDocument.Comments.Count > 0 Then ActiveDocument.DeleteAllComments
@@ -109,56 +111,81 @@ Sub ExportStorySegmentNew()
     'Remove any pre-existing file (overwriting doesn't seem to work).
     DeleteFile newFileName
     
-    'BOM
+    'Prepare new file.
     Dim objStreamUTF8: Set objStreamUTF8 = CreateObject("ADODB.Stream")
     objStreamUTF8.Charset = "UTF-8"
     objStreamUTF8.Mode = adSaveCreateOverWrite
     objStreamUTF8.Open
     
-    'STANDARD
-    Dim fso As Object
-    Set fso = CreateObject("Scripting.FileSystemObject")
-    Dim oFile As Object
-    Set oFile = fso.CreateTextFile("d:\axfile.txt")
+    '@@@@@@@@@@@@@@@@@@@@@@@@@@
+    'Parse text line by line.
     
-    'PARSE TEXT
     Dim p As Paragraph
     For Each p In ActiveDocument.Paragraphs
-    
-    'BOM
-    objStreamUTF8.WriteText p.Range.Text
-    'STANDARD
-    oFile.Write p.Range.Text
+        
+        'Save all bolded words.
+        Dim processedLine As String
+        Dim bolds() As String
+        Dim locations() As Long
+        Dim i As Integer
+        Dim location As Long
+        i = 0
+        location = 0
+        
+        For Each aSentence In p.Range.Sentences
+          For Each aWord In aSentence.Words
+            If aWord.Bold = True Then
+              ReDim Preserve bolds(i)
+              ReDim Preserve locations(i)
+              bolds(i) = aWord
+              locations(i) = location
+              i = i + 1
+            End If
+            'Make sure we keep track of the current location.
+            location = location + Len(aWord)
+          Next
+        Next
+        
+        processedLine = p.Range.Text
+        
+        'Update processedLine so that it reflects bolded characters.
+        i = 0
+        If Not IsVarArrayEmpty(bolds) Then
+            For Each aBold In bolds
+              'Will only replace words from the current location onwards.
+              Dim test As Long
+              test = locations(i)
+              Dim test2 As String
+              test2 = bolds(i)
+              Dim firstPartOfString As String
+              firstPartOfString = Mid(processedLine, 1, locations(i) - 1)
+              processedLine = firstPartOfString + Replace(processedLine, Trim(aBold), "**" + Trim(aBold) + "**", locations(i), 1)
+              i = i + 1
+            Next
+        End If
+        
+        objStreamUTF8.WriteText processedLine
+        
+        Erase bolds, locations
     
     Next p
     
-    'BOM
+    'Save & flush file.
     objStreamUTF8.Position = 0
     objStreamUTF8.SaveToFile newFileName
-    'objStreamUTF8.Type = adTypeBinary
-    'objStreamUTF8.Position = 3
     objStreamUTF8.Flush
     objStreamUTF8.Close
     
-    'STANDARD
-    oFile.Close
-    Set fso = Nothing
-    Set oFile = Nothing
+    '@@@@@@@@@@@@@@@@@@@@@@@@@@
+    'Finalize.
     
-    'FINALIZE.
     ActiveDocument.Close SaveChanges:=wdDoNotSaveChanges
-    
     'Return to old document and restore selection.
     Documents.Open oldFile
-    
-    Application.ScreenUpdating = True
-    
     Selection.GoTo what:=wdGoToBookmark, Name:="OSLTMPRESTORECURSOR"
-    
     For i = ActiveDocument.Bookmarks.Count To 1 Step -1
       If ActiveDocument.Bookmarks(i).Name = "OSLTMPRESTORECURSOR" Then ActiveDocument.Bookmarks(i).Delete
     Next
-    
 
 End Sub
 
@@ -239,3 +266,17 @@ Sub DeleteFile(ByVal FileToDelete As String)
       Kill FileToDelete
    End If
 End Sub
+
+Function IsVarArrayEmpty(anArray As Variant)
+
+Dim i As Integer
+
+On Error Resume Next
+    i = UBound(anArray, 1)
+If Err.Number = 0 Then
+    IsVarArrayEmpty = False
+Else
+    IsVarArrayEmpty = True
+End If
+
+End Function
