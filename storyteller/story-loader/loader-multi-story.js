@@ -36,20 +36,35 @@ function loadNextStoryDataScript ()
 	{
 		return;
 	}
-	$.getScript(KST_REMOTE_URL + _storyDataScriptURLsToLoad[_storyDataScriptIndexToLoad++],
-			loadNextStoryDataScript());
+	jQuery.getScript(KST_REMOTE_URL + _storyDataScriptURLsToLoad[_storyDataScriptIndexToLoad++]);
 }
 
 //Called by a story's data file (.stdata.js extension) script in order to offer the Story Teller data about that story.
 //The call will occur on document.ready for all story data scripts that are loaded.
 function registerStory (storyData)
 {
+	console.debug("The following story has registered: " + storyData.title);
 	_storyDatas.push(storyData);
 	_registeredStories++;
 	//When all stories that required loading are loaded, preparing the menu.
 	if (_registeredStories == _storyDataScriptURLsToLoad.length)
 	{
-		buildStoriesMenu();
+		console.debug("All stories have registered");
+		//Are we using a menu for loading stories?
+		if (KST_BUILD_MENU == 1)
+		{
+			buildStoriesMenu();
+		}
+		//If not, automatically loading the first story.
+		else
+		{
+			loadStory(1);
+		}
+	}
+	//Load the next story script.
+	else
+	{
+		loadNextStoryDataScript();
 	}
 }
 
@@ -65,11 +80,13 @@ function buildStoriesMenu ()
 		var i = 0; //Used to keep track of what Story Data matches what Story Data Script.
 		//Now find the Story Data associated with this Story Data Script.
 		_.each(_storyDatas, function(storyData)
-		{ //Matching is done by checking if the URL of the Story Data Script contains the Base URL inside Story Data.
-			if (storyDataScriptURL.indexOf(storyData.baseURL) != -1)
+		{
+			var storyBaseURL = _storyDataScriptURLsToLoad[i].substr(0, _storyDataScriptURLsToLoad[i].lastIndexOf("/"));
+			//Matching is done by checking if the URL of the Story Data Script contains the Base URL inside Story Data.
+			if (storyDataScriptURL.indexOf(storyBaseURL) != -1)
 			{
 				//Add a link that will call the loadStory function.
-				$("#stories")
+				jQuery("#stories")
 						.append("<a href='javascript:loadStory(" + (i).toString() + ")'>" + storyData.title + "</a>")
 						.append("</br>");
 				return false; //Item found! Break the each loop.

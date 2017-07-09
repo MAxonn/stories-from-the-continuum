@@ -35,6 +35,6 @@ function buildStoryHTML(targetElementID, paragraphs)
 				value = value.replace("**", "</strong>");
 			}
 		}
-		$("#" + targetElementID).append("<p>" + value + "</p>");
+		jQuery("#" + targetElementID).append("<p>" + value + "</p>");
 	});
 }

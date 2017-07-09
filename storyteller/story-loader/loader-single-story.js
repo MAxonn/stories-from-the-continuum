@@ -20,7 +20,7 @@ var _storyData; //Data of the story being loaded.
 function registerStory (storyData)
 {
 	_storyData = storyData;
-	$("#title").append("<h1>" + storyData.title.toString() + "</h1>");
+	$("#title").append("<h1	>" + storyData.title.toString() + "</h1>");
 	loadNextSegment();
 }
 

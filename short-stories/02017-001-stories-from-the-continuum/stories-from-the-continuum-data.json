@@ -1,10 +1,10 @@
 {
 	"Stories from the Continuum": {
 		"A Source of Creation": {
-			"stdata-url": "stories-from-the-continuum-web/short-stories/02017-001-stories-from-the-continuum/01-a-source-of-creation/data/a-source-of-creation.stdata.js"
+			"stdata-url": "01-a-source-of-creation/data/a-source-of-creation.stdata.js"
 		},
 		"Jonas is Flying": {
-			"stdata-url": "stories-from-the-continuum-web/short-stories/02017-001-stories-from-the-continuum/02-jonas-is-flying/data/jonas-is-flying.stdata.js"
+			"stdata-url": "02-jonas-is-flying/data/jonas-is-flying.stdata.js"
 		}
 	}
 }

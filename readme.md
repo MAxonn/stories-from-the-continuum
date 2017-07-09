@@ -108,7 +108,7 @@ As you can see, I am serving the entire GIT repo for Stories from the Continuum.
 
 ### 7.2.3 Instruct the Story Teller to load remote files
 
-Open **/storyteller/config/st.js**
+Open **/storyteller/config/st-offline.js**
 
 Change KST_REMOTE_URL to "http://michaelaxonn.com/st" (the line should already be there, uncomment it).
 

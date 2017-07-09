@@ -32,8 +32,14 @@ function loadStory (storyIndex)
 		//so that they keep the proper sort order independent on what request completes first.
 		var segmentData = {};
 		_segmentsData.push(segmentData);
+
+		//Infer base URL from story data URL location.
+		console.debug("Loading segments for story with Story Data Script: " + _storyDataScriptURLsToLoad[storyIndex]);
+		var storyBaseURL = _storyDataScriptURLsToLoad[storyIndex].substr(0, _storyDataScriptURLsToLoad[storyIndex].lastIndexOf("/"));
+		console.debug("Segments location: " + storyBaseURL);
+
 		//Request story segment.
-		$.get(_storyData.baseURL + tocItem.file, null, function(storyLines)
+		jQuery.get(storyBaseURL + "/" + tocItem.file, null, function(storyLines)
 		{
 			segmentData.lines = storyLines;
 			segmentLoaded();
@@ -56,8 +62,8 @@ function segmentLoaded ()
 function showStory ()
 {
 	//Clear existing content.
-	$("#story").empty();
-	$("#title").empty().append("<h3>" + _storyData.title + "</h3>");
+	jQuery("#story").empty();
+	jQuery("#title").empty().append("<h3>" + _storyData.title + "</h3>");
 	//Render all segments.
 	_.each(_segmentsData, function(value)
 	{
