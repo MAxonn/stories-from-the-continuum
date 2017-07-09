@@ -30,14 +30,18 @@ namespace StoryBuilder
         while ((line = segment.ReadLine()) != null)
         {
           int chapter = 0;
+          //There is no space in this entire line? It is probably a chapter title then.
+          //TODO: this is not ideal because it could treat a single lonely number as a chapter.
           if (line.IndexOf(" ") == -1)
           {
+            //Trying to extract chapter name.
             int.TryParse(line, out chapter);
             if (chapter != 0)
             {
               outputData += "<H2>" + chapter + "</H2>";
             }
           }
+          //It's a standard paragraph.
           if (chapter == 0)
           {
             outputData += "<P>";

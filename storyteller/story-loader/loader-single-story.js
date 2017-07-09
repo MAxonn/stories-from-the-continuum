@@ -20,7 +20,6 @@ var _storyData; //Data of the story being loaded.
 function registerStory (storyData)
 {
 	_storyData = storyData;
-	console.debug(storyData.title.toString());
 	$("#title").append("<h1>" + storyData.title.toString() + "</h1>");
 	loadNextSegment();
 }
@@ -32,7 +31,6 @@ function loadNextSegment()
 	{
 		return;
 	}
-	console.debug(_storyData.toc[_currentSegment].file);
 	$("#ifrLoader").attr('src', _storyData.toc[_currentSegment].file);
 	_currentSegment++;
 }
@@ -46,7 +44,6 @@ function contentLoaded (iFrame)
 		return;
 	}
 	var storySegment = $("#ifrLoader").contents().find("pre").text();
-	console.debug(storySegment);
 	//This function will generate required markup in the HTML element with the ID "content".
 	buildStoryHTML("content", storySegment.split('\n'));
 	loadNextSegment();
