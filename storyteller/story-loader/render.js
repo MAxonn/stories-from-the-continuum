@@ -27,7 +27,8 @@ function buildStoryHTML(targetElementID, paragraphs)
 				var boldEndPos = value.indexOf("**", boldStartPos + 1);
 				if (boldEndPos == -1)
 				{
-					console.debug("Missing bold closing delimiter at " + boldStartPos);
+					console.debug("Missing bold closing delimiter after position: " + boldStartPos +
+					" in paragraph starting with '" + value.substr(0, 30) + "'");
 					continue;
 				}
 				value = value.replace("**", "<strong>");
