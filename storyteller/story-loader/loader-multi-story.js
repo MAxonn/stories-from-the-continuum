@@ -55,10 +55,10 @@ function registerStory (storyData)
 		{
 			buildStoriesMenu();
 		}
-		//If not, automatically loading the first story.
+		//If not, loading all stories.
 		else
 		{
-			loadStory(1);
+			loadAllStories();
 		}
 	}
 	//Load the next story script.
