@@ -103,6 +103,7 @@ Sub ExportStorySegmentNew()
     
     'Save this document and only after that delete all comments & accept revisions.
     'We don't actually want to tamper with those, we only want the document to be "clean" before saving.
+    On Error GoTo RetrySave
     ActiveDocument.Save
     'Stripping away comments & accepting all revisions.
     If ActiveDocument.Comments.Count > 0 Then ActiveDocument.DeleteAllComments
@@ -165,6 +166,8 @@ Sub ExportStorySegmentNew()
             Next
         End If
         
+        processedLine = Replace(processedLine, vbCr, vbCrLf)
+        
         objStreamUTF8.WriteText processedLine
         
         Erase bolds, locations
@@ -190,6 +193,14 @@ Sub ExportStorySegmentNew()
     'So it doesn't annoy us with save prompts.
     ActiveDocument.Save
 
+    Exit Sub
+
+'Sometimes the save fails, probably due to DropBox file sync. Retrying save if it failed.
+RetrySave:
+
+    Sleep 2000
+    ActiveDocument.Save
+    Resume Next
 End Sub
 
 'Imports the chosen story segment into this file. This is usually done when the template.html is opened.
