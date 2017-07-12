@@ -18,13 +18,13 @@ Sub ExportStorySegment()
 '
 '
     Dim oldFile As String
-    oldFile = ActiveDocument.Path + "\" + ActiveDocument.Name
+    oldFile = ActiveDocument.path + "\" + ActiveDocument.name
     
     Dim documentNameWithoutExtension As String
-    documentNameWithoutExtension = Mid(ActiveDocument.Name, 1, InStrRev(ActiveDocument.Name, ".") - 1)
+    documentNameWithoutExtension = Mid(ActiveDocument.name, 1, InStrRev(ActiveDocument.name, ".") - 1)
     
     Dim newPath As String
-    newPath = Mid(ActiveDocument.Path, 1, InStrRev(ActiveDocument.Path, "\") - 1)
+    newPath = Mid(ActiveDocument.path, 1, InStrRev(ActiveDocument.path, "\") - 1)
     
     Dim newFileName As String
     newFileName = newPath + "\" + documentNameWithoutExtension + ".stseg"
@@ -37,7 +37,7 @@ Sub ExportStorySegment()
     'Save this document and only after that delete all comments as we don't want these exported.
     ActiveDocument.Save
     'Stripping away comments.
-    If ActiveDocument.Comments.Count > 0 Then ActiveDocument.DeleteAllComments
+    If ActiveDocument.comments.Count > 0 Then ActiveDocument.DeleteAllComments
     
     'Now save as it as the exported segment, and then close the saved as so that we can to return to the old document.
     ActiveDocument.SaveAs2 FileName:=newFileName, FileFormat:=wdFormatText, _
@@ -53,10 +53,10 @@ Sub ExportStorySegment()
     
     Application.ScreenUpdating = True
     
-    Selection.GoTo what:=wdGoToBookmark, Name:="OSLTMPRESTORECURSOR"
+    Selection.GoTo what:=wdGoToBookmark, name:="OSLTMPRESTORECURSOR"
     
     For i = ActiveDocument.Bookmarks.Count To 1 Step -1
-      If ActiveDocument.Bookmarks(i).Name = "OSLTMPRESTORECURSOR" Then ActiveDocument.Bookmarks(i).Delete
+      If ActiveDocument.Bookmarks(i).name = "OSLTMPRESTORECURSOR" Then ActiveDocument.Bookmarks(i).Delete
     Next
     
     On Error GoTo RetrySave
@@ -87,13 +87,13 @@ Sub ExportStorySegmentNew()
     'Setup.
     
     Dim oldFile As String
-    oldFile = ActiveDocument.Path + "\" + ActiveDocument.Name
+    oldFile = ActiveDocument.path + "\" + ActiveDocument.name
     
     Dim documentNameWithoutExtension As String
-    documentNameWithoutExtension = Mid(ActiveDocument.Name, 1, InStrRev(ActiveDocument.Name, ".") - 1)
+    documentNameWithoutExtension = Mid(ActiveDocument.name, 1, InStrRev(ActiveDocument.name, ".") - 1)
     
     Dim newPath As String
-    newPath = Mid(ActiveDocument.Path, 1, InStrRev(ActiveDocument.Path, "\") - 1)
+    newPath = Mid(ActiveDocument.path, 1, InStrRev(ActiveDocument.path, "\") - 1)
     
     Dim newFileName As String
     newFileName = newPath + "\" + documentNameWithoutExtension + ".stseg"
@@ -106,7 +106,7 @@ Sub ExportStorySegmentNew()
     On Error GoTo RetrySave
     ActiveDocument.Save
     'Stripping away comments & accepting all revisions.
-    If ActiveDocument.Comments.Count > 0 Then ActiveDocument.DeleteAllComments
+    If ActiveDocument.comments.Count > 0 Then ActiveDocument.DeleteAllComments
     ActiveDocument.AcceptAllRevisions
     
     'Remove any pre-existing file (overwriting doesn't seem to work).
@@ -166,6 +166,7 @@ Sub ExportStorySegmentNew()
             Next
         End If
         
+        'Line endings are only vbCr, so making it windows-friendly.
         processedLine = Replace(processedLine, vbCr, vbCrLf)
         
         objStreamUTF8.WriteText processedLine
@@ -175,7 +176,7 @@ Sub ExportStorySegmentNew()
     Next p
     
     'Save & flush file.
-    objStreamUTF8.Position = 0
+    objStreamUTF8.position = 0
     objStreamUTF8.SaveToFile newFileName
     objStreamUTF8.Flush
     objStreamUTF8.Close
@@ -186,9 +187,9 @@ Sub ExportStorySegmentNew()
     ActiveDocument.Close SaveChanges:=wdDoNotSaveChanges
     'Return to old document and restore selection.
     Documents.Open oldFile
-    Selection.GoTo what:=wdGoToBookmark, Name:="OSLTMPRESTORECURSOR"
+    Selection.GoTo what:=wdGoToBookmark, name:="OSLTMPRESTORECURSOR"
     For i = ActiveDocument.Bookmarks.Count To 1 Step -1
-      If ActiveDocument.Bookmarks(i).Name = "OSLTMPRESTORECURSOR" Then ActiveDocument.Bookmarks(i).Delete
+      If ActiveDocument.Bookmarks(i).name = "OSLTMPRESTORECURSOR" Then ActiveDocument.Bookmarks(i).Delete
     Next
     'So it doesn't annoy us with save prompts.
     ActiveDocument.Save
@@ -231,10 +232,10 @@ Sub ImportStorySegment()
     
     'Rename the template as something else.
     Dim storySegmentNameWithoutExtension As String
-    storySegmentNameWithoutExtension = Mid(storySegment.Name, 1, InStrRev(storySegment.Name, ".") - 1)
+    storySegmentNameWithoutExtension = Mid(storySegment.name, 1, InStrRev(storySegment.name, ".") - 1)
     
     Dim newFileName As String
-    newFileName = ActiveDocument.Path + "\" + storySegmentNameWithoutExtension + ".htm"
+    newFileName = ActiveDocument.path + "\" + storySegmentNameWithoutExtension + ".htm"
     
     ActiveDocument.SaveAs2 FileName:=newFileName, FileFormat:=wdFormatHTML, _
                            LockComments:=False, Password:="", AddToRecentFiles:=True, _
@@ -256,7 +257,7 @@ Function showOpenFileDialogParentFolder() As String
     Dim dialogResult As Integer
     
     Dim newPath As String
-    newPath = Mid(ActiveDocument.Path, 1, InStrRev(ActiveDocument.Path, "\") - 1)
+    newPath = Mid(ActiveDocument.path, 1, InStrRev(ActiveDocument.path, "\") - 1)
 
     Application.FileDialog(msoFileDialogOpen).AllowMultiSelect = False
     Application.FileDialog(msoFileDialogOpen).InitialFileName = newPath + "\"
@@ -294,3 +295,5 @@ Else
 End If
 
 End Function
+
+
