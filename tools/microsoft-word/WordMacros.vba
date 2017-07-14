@@ -1,3 +1,7 @@
+'@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+'@@@@@@@@@@@@@@@ WIN32 API DECLARATIONS
+'@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 #If VBA7 Then ' Excel 2010 or later
  
     Public Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal Milliseconds As LongPtr)
@@ -7,6 +11,215 @@
     Public Declare Sub Sleep Lib "kernel32" (ByVal Milliseconds As Long)
  
 #End If
+
+'Combines multiple stories into a single story.
+'IMPORTANT: this macro is to be executed by a template-COLOR.htm file located in any story's "compiled" directory.
+'If a story does not have such a directory, it can be created and in it the template-COLOR.htm (and
+'optionally the footer-COLOR.htm) can be copied in there. The files can be found here: stories-from-the-continuum\tools\microsoft-word\
+Sub CombineStories()
+'
+' CombineStories Macro
+'
+'
+
+End Sub
+
+'Combines multiple story segments into a single story document.
+'IMPORTANT: this macro is to be executed from within any of a story's segments, located inside a
+'story's "data" directory.
+Sub CombineDocuments()
+'
+' CombineDocuments Macro
+'
+'
+          
+    '@@@@@@@@@@@@@@@@@@@@@@@@@@
+    'Construct and save various vital paths & file names.
+    
+    Dim launchingDocumentFileFullPath As String
+    launchingDocumentFileFullPath = ActiveDocument.FullName
+    
+    Dim launchingDocumentPath As String 'The path where the current document is located.
+    launchingDocumentPath = ActiveDocument.Path
+    
+    Dim documentParentPath As String 'The Document Parent Path is in fact the Story Data path.
+    documentParentPath = Mid(ActiveDocument.Path, 1, InStrRev(ActiveDocument.Path, "\") - 1)
+    
+    'Obtaining main story path because that's where we can infer the story name from.
+    Dim storyMainPath As String
+    storyMainPath = Mid(documentParentPath, 1, InStrRev(documentParentPath, "\") - 1)
+    
+    'Extracting the story name.
+    Dim storyName As String
+    storyName = Mid(storyMainPath, InStrRev(storyMainPath, "\") + 1)
+    
+    'Using the story name, we can infer the name that the ST Data (Story Teller Data) file has. We will need this to compose the story ST Data path.
+    Dim storyNameWithoutNumberPrefix As String
+    storyNameWithoutNumberPrefix = Mid(storyName, InStr(1, storyName, "-") + 1)
+    
+    'Compose ST Data full path.
+    Dim stDataFullPath As String
+    stDataFullPath = documentParentPath & "\" & storyNameWithoutNumberPrefix & ".stdata.js"
+        
+    '@@@@@@@@@@@@@@@@@@@@@@@@@@
+    'Read story information from ST Data file.
+        
+    'Open ST Data file of the story to which this document belongs to.
+    Dim FileNum As Integer
+    Dim fileLine As String
+    FileNum = FreeFile()
+    'We are opening here the STORY NAME.stdata.js file. It is the JavaScript file that contains the story's Table of Contents.
+    'In the future this will be a JSON.
+    Open stDataFullPath For Input As #FileNum
+    
+    'Extract information from ST Data file.
+    
+    Dim storyTitleFromSTData As String 'Will store the title of the story that owns all documents that we're about to combine.
+    'Array to store information about all HTML files that we need to process.
+    Dim wordHTMLFiles() As String
+    Dim totalHTMLFiles As Integer
+    totalHTMLFiles = 0
+    
+    'Go through the file line by line.
+    While Not EOF(FileNum)
+        Line Input #FileNum, fileLine
+        'Stop at lines that mention files. The format of such a line is:
+        'SS_01_SFTC_JonasIsFlying_TOC.push( { file: "01.stseg", rawDescription: "1", authors: "Michael Axonn"} );
+        'Of course, if the format changes, this will crash.
+        If InStr(1, fileLine, "file:") <> 0 Then
+          
+          'Extracting the data file string.
+          Dim dataFileString As String
+          dataFileString = Trim(Mid(fileLine, InStr(1, fileLine, "file:") + 5))
+          dataFileString = Mid(dataFileString, 2, InStr(2, dataFileString, """") - 2)
+          'From it, only taking the name, not the extension, since that is how the Word HTML file is EXPECTED to be named.
+          Dim dataFileStringWithoutExtension As String
+          dataFileStringWithoutExtension = Mid(dataFileString, 1, InStr(1, dataFileString, ".") - 1)
+          
+          'Composing Word file name to open.
+          Dim wordHTMLDocumentFullPath As String
+          wordHTMLDocumentFullPath = launchingDocumentPath & "\" & dataFileStringWithoutExtension & ".htm"
+          
+          ReDim Preserve wordHTMLFiles(totalHTMLFiles)
+          wordHTMLFiles(totalHTMLFiles) = wordHTMLDocumentFullPath
+          totalHTMLFiles = totalHTMLFiles + 1
+        End If
+        
+        'Hunt for the story title.
+        If InStr(1, fileLine, "title:") <> 0 Then
+          storyTitleFromSTData = Trim(Mid(fileLine, InStr(1, fileLine, "title:") + 6))
+          storyTitleFromSTData = Mid(storyTitleFromSTData, 2, InStr(2, storyTitleFromSTData, """") - 2)
+        End If
+    Wend
+    
+    '@@@@@@@@@@@@@@@@@@@@@@@@@@
+    'Create combined document.
+    
+    'Compose Document Template path. If it is valid, we will use whatever Document Template is already used.
+    Dim templateDocumentFullPath As String
+    templateDocumentFullPath = launchingDocumentPath & "\template-white.htm"
+    'Create Document to merge all the changes in. If there is a tempalte defined, using it.
+    Dim combinedDoc As Word.Document
+    If Dir(templateDocumentFullPath) <> "" Then
+        Set combinedDoc = Documents.Open(templateDocumentFullPath)
+    Else
+        Set combinedDoc = Documents.Add(DocumentType:=wdNewBlankDocument)
+    End If
+    combinedDoc.TrackFormatting = False
+    combinedDoc.TrackMoves = False
+    combinedDoc.TrackRevisions = False
+    
+    combinedDoc.Range.Style = Word.WdBuiltinStyle.wdStyleHeading1
+    combinedDoc.Range.Text = storyTitleFromSTData & vbCrLf
+    
+    'This section is used to restrict how far the macro is processing.
+    'Dim howFarToProcess As Integer
+    'Dim currentDocument As Integer
+    'currentDocument = 1
+    'howFarToProcess = 1
+    
+    Dim i As Integer
+    For i = 0 To totalHTMLFiles - 1
+    
+        'If currentDocument <= howFarToProcess Then
+        
+            'Open target Word HTML document, clean it up.
+            Dim wordHTMLDocument As Word.Document
+            Set wordHTMLDocument = Documents.Open(wordHTMLFiles(i))
+            wordHTMLDocument.Activate
+            wordHTMLDocument.AcceptAllRevisions
+            'Stripping away comments.
+            If wordHTMLDocument.Comments.Count > 0 Then wordHTMLDocument.DeleteAllComments
+            
+            'Copy processed document into our combined document.
+            Selection.WholeStory
+            Selection.Copy
+            combinedDoc.Activate
+            Selection.EndKey wdStory
+            Selection.PasteSpecial , , , False, wdPasteHTML
+            
+            'Processed document has been stripped of changes, so of course it should NOT be saved on close.
+            wordHTMLDocument.Close SaveChanges:=wdDoNotSaveChanges
+
+            currentDocument = currentDocument + 1
+        'End If
+    
+    Next i
+    
+    '@@@@@@@@@@@@@@@@@@@@@@@@@@
+    'Add Footer if necessary.
+    
+    'Compose Document Footer path. If it is valid, no Footer will be added
+    Dim footerDocumentFullPath As String
+    footerDocumentFullPath = launchingDocumentPath & "\footer-white.htm"
+    Dim wordHTMLDocumentFooter As Word.Document
+    If Dir(footerDocumentFullPath) <> "" Then
+        Set wordHTMLDocumentFooter = Documents.Open(footerDocumentFullPath)
+
+        wordHTMLDocumentFooter.Activate
+        'Copy processed document into our combined document.
+        Selection.WholeStory
+        Selection.Copy
+        combinedDoc.Activate
+        Selection.EndKey wdStory
+        Selection.PasteSpecial , , , False, wdPasteHTML
+        
+        'Processed document has been stripped of changes, so of course it should NOT be saved on close.
+        wordHTMLDocumentFooter.Close SaveChanges:=wdDoNotSaveChanges
+    End If
+
+    'Add information about when the file was compiled.
+    Dim compiledOn As Paragraph
+    Set compiledOn = combinedDoc.Range.Paragraphs.Add
+    compiledOn.Style = Word.WdBuiltinStyle.wdStyleBodyText
+    compiledOn.Range.Italic = True
+    compiledOn.Range.Text = vbCrLf & vbCrLf & vbCrLf & "Compilation date: " & Format(Now(), "yyyy-MM-dd hh:mm:ss")
+
+    'Re-enable tracking of changes.
+    combinedDoc.TrackFormatting = True
+    combinedDoc.TrackMoves = True
+    combinedDoc.TrackRevisions = True
+    
+    'Export data.
+    combinedDoc.SaveAs2 FileName:=storyMainPath & "\" & storyNameWithoutNumberPrefix & ".pdf", FileFormat:=wdFormatPDF, _
+                        LockComments:=False, Password:="", AddToRecentFiles:=False, WritePassword _
+                        :="", ReadOnlyRecommended:=False, EmbedTrueTypeFonts:=False, _
+                        SaveNativePictureFormat:=False, SaveFormsData:=False, SaveAsAOCELetter:= _
+                        False, Encoding:=65001, InsertLineBreaks:=False, AllowSubstitutions:= _
+                        False, LineEnding:=wdCRLF, CompatibilityMode:=0
+                        
+    combinedDoc.SaveAs2 FileName:=storyMainPath & "\" & storyNameWithoutNumberPrefix & ".docx", FileFormat:=wdFormatXMLDocument, _
+                        LockComments:=False, Password:="", AddToRecentFiles:=False, WritePassword _
+                        :="", ReadOnlyRecommended:=False, EmbedTrueTypeFonts:=False, _
+                        SaveNativePictureFormat:=False, SaveFormsData:=False, SaveAsAOCELetter:= _
+                        False, Encoding:=65001, InsertLineBreaks:=False, AllowSubstitutions:= _
+                        False, LineEnding:=wdCRLF, CompatibilityMode:=0
+    
+    combinedDoc.Close SaveChanges:=wdDoNotSaveChanges
+    'Return to original document.
+    Documents.Open (launchingDocumentFileFullPath)
+
+End Sub
 
 'Exports the contents of the document as a text file, into the parent folder of the current folder because
 'that's where the segments are usually located.
@@ -18,16 +231,16 @@ Sub ExportStorySegment()
 '
 '
     Dim oldFile As String
-    oldFile = ActiveDocument.path + "\" + ActiveDocument.name
+    oldFile = ActiveDocument.Path + "\" + ActiveDocument.Name
     
     Dim documentNameWithoutExtension As String
-    documentNameWithoutExtension = Mid(ActiveDocument.name, 1, InStrRev(ActiveDocument.name, ".") - 1)
+    documentNameWithoutExtension = Mid(ActiveDocument.Name, 1, InStrRev(ActiveDocument.Name, ".") - 1)
     
-    Dim newPath As String
-    newPath = Mid(ActiveDocument.path, 1, InStrRev(ActiveDocument.path, "\") - 1)
+    Dim documentParentPath As String 'The Document Parent Path is in fact the Story Data path.
+    documentParentPath = Mid(ActiveDocument.Path, 1, InStrRev(ActiveDocument.Path, "\") - 1)
     
     Dim newFileName As String
-    newFileName = newPath + "\" + documentNameWithoutExtension + ".stseg"
+    newFileName = documentParentPath + "\" + documentNameWithoutExtension + ".stseg"
     
     'Used to return to previous location after exporting the text.
     ActiveDocument.Bookmarks.Add "OSLTMPRESTORECURSOR"
@@ -37,7 +250,7 @@ Sub ExportStorySegment()
     'Save this document and only after that delete all comments as we don't want these exported.
     ActiveDocument.Save
     'Stripping away comments.
-    If ActiveDocument.comments.Count > 0 Then ActiveDocument.DeleteAllComments
+    If ActiveDocument.Comments.Count > 0 Then ActiveDocument.DeleteAllComments
     
     'Now save as it as the exported segment, and then close the saved as so that we can to return to the old document.
     ActiveDocument.SaveAs2 FileName:=newFileName, FileFormat:=wdFormatText, _
@@ -53,10 +266,10 @@ Sub ExportStorySegment()
     
     Application.ScreenUpdating = True
     
-    Selection.GoTo what:=wdGoToBookmark, name:="OSLTMPRESTORECURSOR"
+    Selection.GoTo what:=wdGoToBookmark, Name:="OSLTMPRESTORECURSOR"
     
     For i = ActiveDocument.Bookmarks.Count To 1 Step -1
-      If ActiveDocument.Bookmarks(i).name = "OSLTMPRESTORECURSOR" Then ActiveDocument.Bookmarks(i).Delete
+      If ActiveDocument.Bookmarks(i).Name = "OSLTMPRESTORECURSOR" Then ActiveDocument.Bookmarks(i).Delete
     Next
     
     On Error GoTo RetrySave
@@ -87,16 +300,16 @@ Sub ExportStorySegmentNew()
     'Setup.
     
     Dim oldFile As String
-    oldFile = ActiveDocument.path + "\" + ActiveDocument.name
+    oldFile = ActiveDocument.Path + "\" + ActiveDocument.Name
     
     Dim documentNameWithoutExtension As String
-    documentNameWithoutExtension = Mid(ActiveDocument.name, 1, InStrRev(ActiveDocument.name, ".") - 1)
+    documentNameWithoutExtension = Mid(ActiveDocument.Name, 1, InStrRev(ActiveDocument.Name, ".") - 1)
     
-    Dim newPath As String
-    newPath = Mid(ActiveDocument.path, 1, InStrRev(ActiveDocument.path, "\") - 1)
+    Dim documentParentPath As String 'The Document Parent Path is in fact the Story Data path.
+    documentParentPath = Mid(ActiveDocument.Path, 1, InStrRev(ActiveDocument.Path, "\") - 1)
     
     Dim newFileName As String
-    newFileName = newPath + "\" + documentNameWithoutExtension + ".stseg"
+    newFileName = documentParentPath + "\" + documentNameWithoutExtension + ".stseg"
     
     'Used to return to previous location after exporting the text.
     ActiveDocument.Bookmarks.Add "OSLTMPRESTORECURSOR"
@@ -106,7 +319,7 @@ Sub ExportStorySegmentNew()
     On Error GoTo RetrySave
     ActiveDocument.Save
     'Stripping away comments & accepting all revisions.
-    If ActiveDocument.comments.Count > 0 Then ActiveDocument.DeleteAllComments
+    If ActiveDocument.Comments.Count > 0 Then ActiveDocument.DeleteAllComments
     ActiveDocument.AcceptAllRevisions
     
     'Remove any pre-existing file (overwriting doesn't seem to work).
@@ -134,6 +347,7 @@ Sub ExportStorySegmentNew()
         i = 0
         location = 0
         
+        'Save all bolded locations.
         For Each aSentence In p.Range.Sentences
           For Each aWord In aSentence.Words
             If aWord.Bold = True Then
@@ -176,7 +390,7 @@ Sub ExportStorySegmentNew()
     Next p
     
     'Save & flush file.
-    objStreamUTF8.position = 0
+    objStreamUTF8.Position = 0
     objStreamUTF8.SaveToFile newFileName
     objStreamUTF8.Flush
     objStreamUTF8.Close
@@ -187,9 +401,9 @@ Sub ExportStorySegmentNew()
     ActiveDocument.Close SaveChanges:=wdDoNotSaveChanges
     'Return to old document and restore selection.
     Documents.Open oldFile
-    Selection.GoTo what:=wdGoToBookmark, name:="OSLTMPRESTORECURSOR"
+    Selection.GoTo what:=wdGoToBookmark, Name:="OSLTMPRESTORECURSOR"
     For i = ActiveDocument.Bookmarks.Count To 1 Step -1
-      If ActiveDocument.Bookmarks(i).name = "OSLTMPRESTORECURSOR" Then ActiveDocument.Bookmarks(i).Delete
+      If ActiveDocument.Bookmarks(i).Name = "OSLTMPRESTORECURSOR" Then ActiveDocument.Bookmarks(i).Delete
     Next
     'So it doesn't annoy us with save prompts.
     ActiveDocument.Save
@@ -232,10 +446,10 @@ Sub ImportStorySegment()
     
     'Rename the template as something else.
     Dim storySegmentNameWithoutExtension As String
-    storySegmentNameWithoutExtension = Mid(storySegment.name, 1, InStrRev(storySegment.name, ".") - 1)
+    storySegmentNameWithoutExtension = Mid(storySegment.Name, 1, InStrRev(storySegment.Name, ".") - 1)
     
     Dim newFileName As String
-    newFileName = ActiveDocument.path + "\" + storySegmentNameWithoutExtension + ".htm"
+    newFileName = ActiveDocument.Path + "\" + storySegmentNameWithoutExtension + ".htm"
     
     ActiveDocument.SaveAs2 FileName:=newFileName, FileFormat:=wdFormatHTML, _
                            LockComments:=False, Password:="", AddToRecentFiles:=True, _
@@ -251,16 +465,20 @@ Sub ImportStorySegment()
     storySegment.Close 'Politely closing the imported story segment.
 End Sub
 
+'@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+'@@@@@@@@@@@@@@ UTILITY FUNCTIONS
+'@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
 'Allows the user to open a file from the parent folder.
 Function showOpenFileDialogParentFolder() As String
 
     Dim dialogResult As Integer
     
-    Dim newPath As String
-    newPath = Mid(ActiveDocument.path, 1, InStrRev(ActiveDocument.path, "\") - 1)
+    Dim documentParentPath As String
+    documentParentPath = Mid(ActiveDocument.Path, 1, InStrRev(ActiveDocument.Path, "\") - 1)
 
     Application.FileDialog(msoFileDialogOpen).AllowMultiSelect = False
-    Application.FileDialog(msoFileDialogOpen).InitialFileName = newPath + "\"
+    Application.FileDialog(msoFileDialogOpen).InitialFileName = documentParentPath + "\"
 
     dialogResult = Application.FileDialog(msoFileDialogOpen).Show
     If dialogResult <> 0 Then
@@ -295,5 +513,3 @@ Else
 End If
 
 End Function
-
-

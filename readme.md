@@ -24,9 +24,11 @@ Stories from the Continuum is well suited for Open Source because it consists of
 
 # 4. Read The Stories, Plain and Simple
 
-The fastest way to read the stories here is to simply download the HTML files marked with `-OFFLINE` inside each story's folder. You can also download or clone this entire repository and open the `-OFFLINE` files in your browser.
+The fastest way to read the stories here is to simply download one of the documents located in a story's main folder and that are named just like the story is (for example "Jonas Is Flying" from the short stories book "Stories from the Continuum" is located at `02017-001-stories-from-the-continuum\02-jonas-is-flying\` and the story files are named `jonas-is-flying`. You can usually find several different formats available. The usual suspects are currently: `HTML`, `PDF`, `DOCX`. You can also download or clone this entire repository and open whatever files you wish.
 
-If changes are made to a story, the `-OFFLINE` files are usually re-generated. If they are not, you can use a script located inside the story folder to re-generate the HTML `-OFFLINE` file. Use `buildHTML.bat` on Windows. A Linux/Mac bash script will eventually be available.
+If changes are made to a story, the story files are usually re-generated. If they are not, you can use the `buildStory.bat` located inside the story folder to re-generate the HTML file. This will work only on Windows for now (it launches a .Net 2.0 C# application, but it is very easy to port this to another OS via the Mono Framework).
+
+Ignore the `-DYNAMIC.html` file. That is actually using the Story Teller to display the stories and since you're in the section titled `Read The Stories, Plain and Simple` you shouldn't care about that. If you want to use the Story Teller, skip over to the `How to Use the Story Teller to Read` section.
 
 In all fairness, you could read the stories even without a web browser. You just need a program that can read text :). The stories are split into segments that are available inside each story's `'/data'` folder. Even though they have the `.stseg` extension (chosen so that you can associate a particular text editor with them), these segments are plain text files that can be opened by any program that can interpret text (and all operating systems have at least one such program).
 
@@ -69,6 +71,14 @@ Regarding the "exotic" `.stseg` extension that story segments have: don't panic.
 **IMPORTANT**: please go and read the readme.md inside the `'/tools'` folder in order to learn more about Internal Document Tracking via Microsoft Word.
 
 # 7. How to Use the Story Teller to Read
+
+# 7.1 Online Reading
+
+The Story Teller for the first book, `Stories from the Continuum`, is available online at `http://michaelaxonn.com/stories-from-the-continuum-master/stories-from-the-continuum/`. The JavaScripts used by it are not obfuscated and uploaded in development version (comments included). You can therefore inspet how it works.
+
+A Master page for the Story Teller, offering landing pages for all stories and novels will be made available at a later date.
+
+# 7.2 Offline Reading
 
 The Story Teller is the preferred way to navigate content in this repository. It presents a story by loading the actual segments and will soon be able to do much more than that.
 

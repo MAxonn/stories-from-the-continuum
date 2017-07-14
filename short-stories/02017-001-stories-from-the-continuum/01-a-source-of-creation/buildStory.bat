@@ -2,13 +2,9 @@
 
 REM Must memorize current path.
 set currentPath=%CD%
-
-REM navigate to the Story Builder BAT.
+echo %currentPath%
 cd..
 cd..
 cd..
-cd tools
-cd static-content-generator
-
-REM Launch story builder with current path.
-storyBuilder "%currentPath%"
+cd tools\static-content-generator\storybuilder\storybuilder\bin\debug\
+StoryBuilder.exe "%currentPath%" "..\..\..\..\..\..\static-content-generator" "A Source of Creation"

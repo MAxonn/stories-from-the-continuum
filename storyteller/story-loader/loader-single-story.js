@@ -31,7 +31,7 @@ function loadNextSegment()
 	{
 		return;
 	}
-	$("#ifrLoader").attr('src', _storyData.toc[_currentSegment].file);
+	$("#ifrLoader").attr('src', 'data/' + _storyData.toc[_currentSegment].file);
 	_currentSegment++;
 }
 

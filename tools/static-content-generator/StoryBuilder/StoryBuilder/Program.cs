@@ -1,11 +1,14 @@
 ﻿using System.IO;
 
-
-
 namespace StoryBuilder
 {
 
-  class Program
+	//Debug arguments to use when debugging at home:
+	//"c:\Dropbox\Human\stories-from-the-continuum\short-stories\02017-001-stories-from-the-continuum\02-jonas-is-flying" "c:\Dropbox\Human\stories-from-the-continuum\tools\static-content-generator" "Jonas is Flying"
+	//Someplace else:
+	//"e:\Dropbox\Human\stories-from-the-continuum\short-stories\02017-001-stories-from-the-continuum\01-a-source-of-creation" "..\..\..\..\..\static-content-generator" "A Source of Creation"
+
+	class Program
   {
     static void Main(string[] args)
     {
@@ -14,14 +17,16 @@ namespace StoryBuilder
 
       string folderName = Path.GetFileNameWithoutExtension(args[0]);
       string fileName = folderName.Substring(folderName.IndexOf("-") + 1);
-      string outputFile = args[0] + "\\" + fileName + "-OFFLINE.html";
+      string outputFile = args[0] + "\\" + fileName + ".html";
       
-      string outputData;
-      string header = File.ReadAllText(args[1] + @"\header.htpart");
-      string footer = File.ReadAllText(args[1] + @"\footer.htpart");
-      outputData = header;
+			string appPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+			string headerPath = appPath + args[1] + @"\header.htpart";
+			string header = File.ReadAllText(headerPath);
+      string footer = File.ReadAllText(appPath + args[1] + @"\footer.htpart");
 
-      outputData += "<H1>" + args[2] + "</H1>";
+			string outputData;
+			outputData = header;
+      outputData += "<H1>" + args[2] + "</H1>"; //Add story title.
 
       foreach (string file in files)
       {

@@ -3,4 +3,8 @@
 REM Must memorize current path.
 set currentPath=%CD%
 echo %currentPath%
-c:\Dropbox\Human\stories-from-the-continuum\tools\static-content-generator\StoryBuilder\StoryBuilder\bin\Debug\StoryBuilder.exe "%currentPath%" "c:\Dropbox\Human\stories-from-the-continuum\tools\static-content-generator" "Jonas is Flying"
+cd..
+cd..
+cd..
+cd tools\static-content-generator\storybuilder\storybuilder\bin\debug\
+StoryBuilder.exe "%currentPath%" "..\..\..\..\..\..\static-content-generator" "Jonas is Flying"
