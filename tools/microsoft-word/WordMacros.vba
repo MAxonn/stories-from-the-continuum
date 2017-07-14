@@ -22,6 +22,78 @@ Sub CombineStories()
 '
 '
 
+    '@@@@@@@@@@@@@@@@@@@@@@@@@@
+    'Construct and save various vital paths & file names
+    
+    Dim launchingDocumentFileFullPath As String
+    launchingDocumentFileFullPath = ActiveDocument.FullName
+    
+    Dim launchingDocumentPath As String 'The path where the current document is located.
+    launchingDocumentPath = ActiveDocument.Path
+    
+    Dim documentParentPath As String 'The Document Parent Path is in fact the Story Data path.
+    documentParentPath = Mid(ActiveDocument.Path, 1, InStrRev(ActiveDocument.Path, "\") - 1)
+    
+    'Extracting the book name.
+    Dim bookName As String
+    bookName = Mid(documentParentPath, InStrRev(documentParentPath, "\") + 1)
+    
+    'Using the story name, we can infer the name that the ST Data (Story Teller Data) file has. We will need this to compose the story ST Data path.
+    Dim bookNameWithoutNumberPrefix As String
+    bookNameWithoutNumberPrefix = Mid(bookName, InStr(1, bookName, "-") + 1)
+    bookNameWithoutNumberPrefix = Mid(bookNameWithoutNumberPrefix, InStr(1, bookNameWithoutNumberPrefix, "-") + 1)
+    
+    'Composing book name data file name.
+    Dim bookDataFile As String
+    bookDataFile = documentParentPath & "\" & bookNameWithoutNumberPrefix & "-data.json"
+    
+    '@@@@@@@@@@@@@@@@@@@@@@@@@@
+    'Read story information from ST Data file.
+
+    'Open the JSON file that describes the components of this book.
+    Dim FileNum As Integer
+    Dim fileLine As String
+    FileNum = FreeFile()
+    Open bookDataFile For Input As #FileNum
+    
+    'Extract information from the JSON file.
+    
+    Dim bookNameFromJSONData As String 'Will store the title of the story that owns all documents that we're about to combine.
+    Dim bookNameFound As Boolean
+    bookNameFound = False
+    'Array to store information about all HTML files that we need to process.
+    Dim storySTDATAfiles() As String
+    Dim totalStoryFiles As Integer
+    totalStoryFiles = 0
+        
+    'Go through the file line by line.
+    While Not EOF(FileNum)
+        Line Input #FileNum, fileLine
+        
+        'Hunt for the book name.
+        If Not bookNameFound And InStr(1, fileLine, """") <> 0 Then
+            bookNameFromJSONData = Mid(fileLine, InStr(1, fileLine, """") + 1)
+            bookNameFromJSONData = Mid(bookNameFromJSONData, 1, InStr(1, bookNameFromJSONData, """") - 1)
+            MsgBox """" & bookNameFromJSONData & """"
+            bookNameFound = True
+        End If
+        
+        'Stop at lines that mention URLs for ST Data (Story Teller Data) files. The format of such a line is:
+        '"stdata-url": "01-a-source-of-creation/data/a-source-of-creation.stdata.js"
+        'Of course, if the format changes, this will crash.
+        If InStr(1, fileLine, """stdata-url"":") <> 0 Then
+            'Extracting the path where the ST Data file is located.
+            Dim storyMainPath As String
+            dataFileString = Trim(Mid(fileLine, InStr(1, fileLine, """stdata-url"":") + 13))
+            dataFileString = Trim(Mid(dataFileString, 2, InStr(1, dataFileString, "/") - 2))
+            
+            'Save all data files involved in a book.
+            ReDim Preserve storySTDATAfiles(totalStoryFiles)
+            storySTDATAfiles(totalStoryFiles) = dataFileString
+            totalStoryFiles = totalStoryFiles + 1
+        End If
+    Wend
+       
 End Sub
 
 'Combines multiple story segments into a single story document.
@@ -513,3 +585,5 @@ Else
 End If
 
 End Function
+
+
