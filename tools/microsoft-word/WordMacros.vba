@@ -74,7 +74,6 @@ Sub CombineStories()
         If Not bookNameFound And InStr(1, fileLine, """") <> 0 Then
             bookNameFromJSONData = Mid(fileLine, InStr(1, fileLine, """") + 1)
             bookNameFromJSONData = Mid(bookNameFromJSONData, 1, InStr(1, bookNameFromJSONData, """") - 1)
-            MsgBox """" & bookNameFromJSONData & """"
             bookNameFound = True
         End If
         
@@ -83,13 +82,14 @@ Sub CombineStories()
         'Of course, if the format changes, this will crash.
         If InStr(1, fileLine, """stdata-url"":") <> 0 Then
             'Extracting the path where the ST Data file is located.
-            Dim storyMainPath As String
-            dataFileString = Trim(Mid(fileLine, InStr(1, fileLine, """stdata-url"":") + 13))
-            dataFileString = Trim(Mid(dataFileString, 2, InStr(1, dataFileString, "/") - 2))
+            Dim storyDataFileFullPath As String
+            storyDataFileFullPath = Trim(Mid(fileLine, InStr(1, fileLine, """stdata-url"":") + 13))
+            storyDataFileFullPath = Trim(Mid(storyDataFileFullPath, 2, Len(storyDataFileFullPath) - 2))
+            storyDataFileFullPath = Replace(storyDataFileFullPath, "/", "\")
             
             'Save all data files involved in a book.
             ReDim Preserve storySTDATAfiles(totalStoryFiles)
-            storySTDATAfiles(totalStoryFiles) = dataFileString
+            storySTDATAfiles(totalStoryFiles) = documentParentPath & "\" & storyDataFileFullPath
             totalStoryFiles = totalStoryFiles + 1
         End If
     Wend
