@@ -31,7 +31,7 @@ Sub CombineStories()
     Dim launchingDocumentPath As String 'The path where the current document is located.
     launchingDocumentPath = ActiveDocument.Path
     
-    Dim documentParentPath As String 'The Document Parent Path is in fact the Story Data path.
+    Dim documentParentPath As String 'The Document Parent Path is in fact the Book path.
     documentParentPath = Mid(ActiveDocument.Path, 1, InStrRev(ActiveDocument.Path, "\") - 1)
     
     'Extracting the book name.
@@ -93,7 +93,97 @@ Sub CombineStories()
             totalStoryFiles = totalStoryFiles + 1
         End If
     Wend
-       
+    
+    '@@@@@@@@@@@@@@@@@@@@@@@@@@
+    'Create combined document.
+    
+    'This IS the template.
+    Dim templateDocumentFullPath As String
+    templateDocumentFullPath = ActiveDocument.FullName
+    
+    'Create Document to merge all the changes in. If there is a tempalte defined, using it.
+    Dim combinedDoc As Word.Document
+    If Dir(templateDocumentFullPath) <> "" Then
+        Set combinedDoc = Documents.Open(templateDocumentFullPath)
+    Else
+        Set combinedDoc = Documents.Add(DocumentType:=wdNewBlankDocument)
+    End If
+    combinedDoc.TrackFormatting = False
+    combinedDoc.TrackMoves = False
+    combinedDoc.TrackRevisions = False
+    
+    'Title should be on its own page!
+    Dim title As Paragraph
+    Set title = combinedDoc.Range.Paragraphs.Add
+    title.Style = Word.WdBuiltinStyle.wdStyleHeading1
+    title.Range.Text = bookNameFromJSONData & vbCrLf
+    
+    Dim newPage As Paragraph
+    Set newPage = combinedDoc.Range.Paragraphs.Add
+    newPage.Range.InsertBreak Type:=Word.WdBreakType.wdPageBreak
+    
+    'This section is used to restrict how far the macro is processing.
+    'Dim howFarToProcess As Integer
+    'Dim currentDocument As Integer
+    'currentDocument = 1
+    'howFarToProcess = 1
+    
+    Dim i As Integer
+    For i = 0 To totalStoryFiles - 1
+    
+        'If currentDocument <= howFarToProcess Then
+        
+            'Tracked files path.
+            Dim trackedSegmentFilesPath As String
+            trackedSegmentFilesPath = Mid(storySTDATAfiles(i), 1, InStrRev(storySTDATAfiles(i), "\")) & "tracked"
+            'Open target Word HTML document, clean it up.
+            Dim wordHTMLDocument As Word.Document
+            Set wordHTMLDocument = GetStoryDocument(storySTDATAfiles(i), trackedSegmentFilesPath)
+            
+            'Copy.
+            wordHTMLDocument.Activate
+            'Copy processed document into our combined document.
+            Selection.WholeStory
+            Selection.Copy
+            
+            'Paste
+            combinedDoc.Activate
+            Selection.EndKey wdStory
+            Selection.PasteSpecial , , , False, wdPasteHTML
+            
+            'Processed document has been stripped of changes, so of course it should NOT be saved on close.
+            wordHTMLDocument.Close SaveChanges:=wdDoNotSaveChanges
+
+            currentDocument = currentDocument + 1
+        'End If
+    
+    Next i
+
+    AddFooterAndCompilationDateTime combinedDoc, launchingDocumentPath
+
+    'Re-enable tracking of changes.
+    combinedDoc.TrackFormatting = True
+    combinedDoc.TrackMoves = True
+    combinedDoc.TrackRevisions = True
+    
+    'Export data.
+    combinedDoc.SaveAs2 FileName:=documentParentPath & "\" & bookName & ".pdf", FileFormat:=wdFormatPDF, _
+                        LockComments:=False, Password:="", AddToRecentFiles:=False, WritePassword _
+                        :="", ReadOnlyRecommended:=False, EmbedTrueTypeFonts:=False, _
+                        SaveNativePictureFormat:=False, SaveFormsData:=False, SaveAsAOCELetter:= _
+                        False, Encoding:=65001, InsertLineBreaks:=False, AllowSubstitutions:= _
+                        False, LineEnding:=wdCRLF, CompatibilityMode:=0
+                        
+    combinedDoc.SaveAs2 FileName:=documentParentPath & "\" & bookName & ".docx", FileFormat:=wdFormatXMLDocument, _
+                        LockComments:=False, Password:="", AddToRecentFiles:=False, WritePassword _
+                        :="", ReadOnlyRecommended:=False, EmbedTrueTypeFonts:=False, _
+                        SaveNativePictureFormat:=False, SaveFormsData:=False, SaveAsAOCELetter:= _
+                        False, Encoding:=65001, InsertLineBreaks:=False, AllowSubstitutions:= _
+                        False, LineEnding:=wdCRLF, CompatibilityMode:=0
+    
+    combinedDoc.Close SaveChanges:=wdDoNotSaveChanges
+    'Return to original document.
+    Documents.Open (launchingDocumentFileFullPath)
 End Sub
 
 'Combines multiple story segments into a single story document.
@@ -104,7 +194,7 @@ Sub CombineDocuments()
 ' CombineDocuments Macro
 '
 '
-          
+
     '@@@@@@@@@@@@@@@@@@@@@@@@@@
     'Construct and save various vital paths & file names.
     
@@ -133,6 +223,33 @@ Sub CombineDocuments()
     Dim stDataFullPath As String
     stDataFullPath = documentParentPath & "\" & storyNameWithoutNumberPrefix & ".stdata.js"
         
+    Dim storyDocument As Word.Document
+    Set storyDocument = GetStoryDocument(stDataFullPath, launchingDocumentPath)
+    AddFooterAndCompilationDateTime storyDocument, launchingDocumentPath
+
+    'Export data.
+    storyDocument.SaveAs2 FileName:=storyMainPath & "\" & storyNameWithoutNumberPrefix & ".pdf", FileFormat:=wdFormatPDF, _
+                        LockComments:=False, Password:="", AddToRecentFiles:=False, WritePassword _
+                        :="", ReadOnlyRecommended:=False, EmbedTrueTypeFonts:=False, _
+                        SaveNativePictureFormat:=False, SaveFormsData:=False, SaveAsAOCELetter:= _
+                        False, Encoding:=65001, InsertLineBreaks:=False, AllowSubstitutions:= _
+                        False, LineEnding:=wdCRLF, CompatibilityMode:=0
+                        
+    storyDocument.SaveAs2 FileName:=storyMainPath & "\" & storyNameWithoutNumberPrefix & ".docx", FileFormat:=wdFormatXMLDocument, _
+                        LockComments:=False, Password:="", AddToRecentFiles:=False, WritePassword _
+                        :="", ReadOnlyRecommended:=False, EmbedTrueTypeFonts:=False, _
+                        SaveNativePictureFormat:=False, SaveFormsData:=False, SaveAsAOCELetter:= _
+                        False, Encoding:=65001, InsertLineBreaks:=False, AllowSubstitutions:= _
+                        False, LineEnding:=wdCRLF, CompatibilityMode:=0
+    
+    storyDocument.Close SaveChanges:=wdDoNotSaveChanges
+    'Return to original document.
+    Documents.Open (launchingDocumentFileFullPath)
+
+End Sub
+
+Function GetStoryDocument(stDataFullPath As String, launchingDocumentPath As String) As Word.Document
+
     '@@@@@@@@@@@@@@@@@@@@@@@@@@
     'Read story information from ST Data file.
         
@@ -226,6 +343,8 @@ Sub CombineDocuments()
             'Copy processed document into our combined document.
             Selection.WholeStory
             Selection.Copy
+            
+            'Paste
             combinedDoc.Activate
             Selection.EndKey wdStory
             Selection.PasteSpecial , , , False, wdPasteHTML
@@ -237,9 +356,20 @@ Sub CombineDocuments()
         'End If
     
     Next i
+
+    'Re-enable tracking of changes.
+    combinedDoc.TrackFormatting = True
+    combinedDoc.TrackMoves = True
+    combinedDoc.TrackRevisions = True
     
-    '@@@@@@@@@@@@@@@@@@@@@@@@@@
-    'Add Footer if necessary.
+    Set GetStoryDocument = combinedDoc
+End Function
+
+Sub AddFooterAndCompilationDateTime(targetDocument As Word.Document, launchingDocumentPath As String)
+    
+    targetDocument.TrackFormatting = False
+    targetDocument.TrackMoves = False
+    targetDocument.TrackRevisions = False
     
     'Compose Document Footer path. If it is valid, no Footer will be added
     Dim footerDocumentFullPath As String
@@ -252,7 +382,7 @@ Sub CombineDocuments()
         'Copy processed document into our combined document.
         Selection.WholeStory
         Selection.Copy
-        combinedDoc.Activate
+        targetDocument.Activate
         Selection.EndKey wdStory
         Selection.PasteSpecial , , , False, wdPasteHTML
         
@@ -262,35 +392,14 @@ Sub CombineDocuments()
 
     'Add information about when the file was compiled.
     Dim compiledOn As Paragraph
-    Set compiledOn = combinedDoc.Range.Paragraphs.Add
+    Set compiledOn = targetDocument.Range.Paragraphs.Add
     compiledOn.Style = Word.WdBuiltinStyle.wdStyleBodyText
     compiledOn.Range.Italic = True
     compiledOn.Range.Text = vbCrLf & vbCrLf & vbCrLf & "Compilation date: " & Format(Now(), "yyyy-MM-dd hh:mm:ss")
-
-    'Re-enable tracking of changes.
-    combinedDoc.TrackFormatting = True
-    combinedDoc.TrackMoves = True
-    combinedDoc.TrackRevisions = True
     
-    'Export data.
-    combinedDoc.SaveAs2 FileName:=storyMainPath & "\" & storyNameWithoutNumberPrefix & ".pdf", FileFormat:=wdFormatPDF, _
-                        LockComments:=False, Password:="", AddToRecentFiles:=False, WritePassword _
-                        :="", ReadOnlyRecommended:=False, EmbedTrueTypeFonts:=False, _
-                        SaveNativePictureFormat:=False, SaveFormsData:=False, SaveAsAOCELetter:= _
-                        False, Encoding:=65001, InsertLineBreaks:=False, AllowSubstitutions:= _
-                        False, LineEnding:=wdCRLF, CompatibilityMode:=0
-                        
-    combinedDoc.SaveAs2 FileName:=storyMainPath & "\" & storyNameWithoutNumberPrefix & ".docx", FileFormat:=wdFormatXMLDocument, _
-                        LockComments:=False, Password:="", AddToRecentFiles:=False, WritePassword _
-                        :="", ReadOnlyRecommended:=False, EmbedTrueTypeFonts:=False, _
-                        SaveNativePictureFormat:=False, SaveFormsData:=False, SaveAsAOCELetter:= _
-                        False, Encoding:=65001, InsertLineBreaks:=False, AllowSubstitutions:= _
-                        False, LineEnding:=wdCRLF, CompatibilityMode:=0
-    
-    combinedDoc.Close SaveChanges:=wdDoNotSaveChanges
-    'Return to original document.
-    Documents.Open (launchingDocumentFileFullPath)
-
+    targetDocument.TrackFormatting = True
+    targetDocument.TrackMoves = True
+    targetDocument.TrackRevisions = True
 End Sub
 
 'Exports the contents of the document as a text file, into the parent folder of the current folder because
