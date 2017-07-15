@@ -62,7 +62,7 @@ Sub CombineStories()
     Dim bookNameFound As Boolean
     bookNameFound = False
     'Array to store information about all HTML files that we need to process.
-    Dim storySTDATAfiles() As String
+    Dim storySTDATAFilesFullPath() As String
     Dim totalStoryFiles As Integer
     totalStoryFiles = 0
         
@@ -81,15 +81,15 @@ Sub CombineStories()
         '"stdata-url": "01-a-source-of-creation/data/a-source-of-creation.stdata.js"
         'Of course, if the format changes, this will crash.
         If InStr(1, fileLine, """stdata-url"":") <> 0 Then
-            'Extracting the path where the ST Data file is located.
-            Dim storyDataFileFullPath As String
-            storyDataFileFullPath = Trim(Mid(fileLine, InStr(1, fileLine, """stdata-url"":") + 13))
-            storyDataFileFullPath = Trim(Mid(storyDataFileFullPath, 2, Len(storyDataFileFullPath) - 2))
-            storyDataFileFullPath = Replace(storyDataFileFullPath, "/", "\")
+            'Extracting the path where the ST Data file is located & process it.
+            Dim storyDataFileRelativePath As String
+            storyDataFileRelativePath = Trim(Mid(fileLine, InStr(1, fileLine, """stdata-url"":") + 13))
+            storyDataFileRelativePath = Trim(Mid(storyDataFileRelativePath, 2, Len(storyDataFileRelativePath) - 2))
+            storyDataFileRelativePath = Replace(storyDataFileRelativePath, "/", "\")
             
             'Save all data files involved in a book.
-            ReDim Preserve storySTDATAfiles(totalStoryFiles)
-            storySTDATAfiles(totalStoryFiles) = documentParentPath & "\" & storyDataFileFullPath
+            ReDim Preserve storySTDATAFilesFullPath(totalStoryFiles)
+            storySTDATAFilesFullPath(totalStoryFiles) = documentParentPath & "\" & storyDataFileRelativePath
             totalStoryFiles = totalStoryFiles + 1
         End If
     Wend
@@ -112,15 +112,11 @@ Sub CombineStories()
     combinedDoc.TrackMoves = False
     combinedDoc.TrackRevisions = False
     
-    'Title should be on its own page!
+    'Add the title of the book into the document.
     Dim title As Paragraph
     Set title = combinedDoc.Range.Paragraphs.Add
     title.Style = Word.WdBuiltinStyle.wdStyleHeading1
-    title.Range.Text = bookNameFromJSONData & vbCrLf
-    
-    Dim newPage As Paragraph
-    Set newPage = combinedDoc.Range.Paragraphs.Add
-    newPage.Range.InsertBreak Type:=Word.WdBreakType.wdPageBreak
+    title.Range.Text = bookNameFromJSONData & vbCrLf & vbCrLf
     
     'This section is used to restrict how far the macro is processing.
     'Dim howFarToProcess As Integer
@@ -129,16 +125,23 @@ Sub CombineStories()
     'howFarToProcess = 1
     
     Dim i As Integer
+    'Go through all ST (Story Teller) Data files.
     For i = 0 To totalStoryFiles - 1
     
         'If currentDocument <= howFarToProcess Then
-        
+    
+            'Every story should be on its own page.
+            Dim newPage As Paragraph
+            Set newPage = combinedDoc.Range.Paragraphs.Add
+            newPage.Range.InsertBreak Type:=Word.WdBreakType.wdPageBreak
+
             'Tracked files path.
             Dim trackedSegmentFilesPath As String
-            trackedSegmentFilesPath = Mid(storySTDATAfiles(i), 1, InStrRev(storySTDATAfiles(i), "\")) & "tracked"
+            trackedSegmentFilesPath = Mid(storySTDATAFilesFullPath(i), 1, InStrRev(storySTDATAFilesFullPath(i), "\")) & "tracked"
             'Open target Word HTML document, clean it up.
             Dim wordHTMLDocument As Word.Document
-            Set wordHTMLDocument = GetStoryDocument(storySTDATAfiles(i), trackedSegmentFilesPath)
+            'Using our own function for getting a document that contains a Story.
+            Set wordHTMLDocument = GetStoryDocument(storySTDATAFilesFullPath(i), trackedSegmentFilesPath)
             
             'Copy.
             wordHTMLDocument.Activate
@@ -159,6 +162,8 @@ Sub CombineStories()
     
     Next i
 
+    'Using our own function for adding a footer & compilation time to the end of the produced document.
+    'Footer is optional and if not present, the function will skip it.
     AddFooterAndCompilationDateTime combinedDoc, launchingDocumentPath
 
     'Re-enable tracking of changes.
@@ -224,7 +229,10 @@ Sub CombineDocuments()
     stDataFullPath = documentParentPath & "\" & storyNameWithoutNumberPrefix & ".stdata.js"
         
     Dim storyDocument As Word.Document
+    'Get the story document using our own special-built function.
     Set storyDocument = GetStoryDocument(stDataFullPath, launchingDocumentPath)
+    'Using our own function for adding a footer & compilation time to the end of the produced document.
+    'Footer is optional and if not present, the function will skip it.
     AddFooterAndCompilationDateTime storyDocument, launchingDocumentPath
 
     'Export data.
@@ -248,6 +256,13 @@ Sub CombineDocuments()
 
 End Sub
 
+'Returns a Word Document that contains all of the Story Segments (STSEG), as listed in a story's Story Teller Data (STData) file.
+'PARAM stDataFullPath: the full path to a stdata.js file (soon to be converted into stdata.json).
+'PARAM launchingDocumentPath: the path where the document was launched from. This is important for two reasons:
+'                             1. (and most important) the function will look for Word HTML documents in this path,
+'                                based on the names of the Story Segments that it finds in the ST Data file.
+'                             2. the function will use this path to attempt and use a template document which will
+'                                become the combined document. For now, the template file name is hardcoded to "template-white.htm".
 Function GetStoryDocument(stDataFullPath As String, launchingDocumentPath As String) As Word.Document
 
     '@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -365,6 +380,11 @@ Function GetStoryDocument(stDataFullPath As String, launchingDocumentPath As Str
     Set GetStoryDocument = combinedDoc
 End Function
 
+'Inside a Word Document, adds a footer (optional) and the current date & time.
+'PARAM targetDocument: the document into which to add these.
+'PARAM launchingDocumentPath: the path where the document was launched from. This is used to find the footer file.
+'                             The footer is currently hardcoded to "footer-white.htm". If this file is not found,
+'                             no footer will be added. Therefore passing nothing here will cause the footer to be skipped.
 Sub AddFooterAndCompilationDateTime(targetDocument As Word.Document, launchingDocumentPath As String)
     
     targetDocument.TrackFormatting = False
